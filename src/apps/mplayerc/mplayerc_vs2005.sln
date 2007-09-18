@@ -34,8 +34,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sizecbar", "..\..\ui\sizecb
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TreePropSheet", "..\..\ui\TreePropSheet\TreePropSheet_vs2005.vcproj", "{AB494732-EF6D-44D0-BCF8-80FF04858D10}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseClasses", "C:\Development\Platform SDK 5\Samples\Multimedia\DirectShow\BaseClasses\baseclasses_2005.vcproj", "{C14D9535-35E5-4B7F-8614-B772A214EB0B}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libssf", "..\..\subtitles\libssf\libssf.vcproj", "{DD9D2D92-2241-408A-859E-B85D444B7E3C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "..\..\libpng\libpng_vs2005.vcproj", "{FC8080D1-603C-45EC-BCFA-7172E2F3D989}"
@@ -160,22 +158,6 @@ Global
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.Release|Win32.ActiveCfg = Release|Win32
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.Release|Win32.Build.0 = Release|Win32
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.Release|Win64 (AMD64).ActiveCfg = Release|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug Unicode|Win32.ActiveCfg = Debug Unicode|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug Unicode|Win32.Build.0 = Debug Unicode|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug Unicode|Win64 (AMD64).ActiveCfg = Debug Unicode|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug Unicode|Win64 (AMD64).Build.0 = Debug Unicode|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug|Win32.Build.0 = Debug|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug|Win64 (AMD64).ActiveCfg = Debug|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Debug|Win64 (AMD64).Build.0 = Debug|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release Unicode|Win32.ActiveCfg = Release Unicode|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release Unicode|Win32.Build.0 = Release Unicode|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release Unicode|Win64 (AMD64).ActiveCfg = Release Unicode|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release Unicode|Win64 (AMD64).Build.0 = Release Unicode|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release|Win32.ActiveCfg = Release|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release|Win32.Build.0 = Release|Win32
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release|Win64 (AMD64).ActiveCfg = Release|Win64 (AMD64)
-		{C14D9535-35E5-4B7F-8614-B772A214EB0B}.Release|Win64 (AMD64).Build.0 = Release|Win64 (AMD64)
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug Unicode|Win32.ActiveCfg = Debug Unicode|Win32
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug Unicode|Win32.Build.0 = Debug Unicode|Win32
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug Unicode|Win64 (AMD64).ActiveCfg = Debug Unicode|Win32

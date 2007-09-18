@@ -272,7 +272,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="decssD.lib asyncreaderD.lib strmbaseD.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
@@ -342,7 +341,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="decssDU.lib asyncreaderDU.lib strmbaseDU.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
@@ -412,7 +410,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="decssR.lib asyncreaderR.lib strmbaseR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
@@ -485,7 +482,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="decssRU.lib asyncreaderRU.lib strmbaseRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"

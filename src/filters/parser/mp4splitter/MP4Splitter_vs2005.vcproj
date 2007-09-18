@@ -357,6 +357,7 @@
 				AdditionalDependencies="zlibR.lib strmbaseR.lib dsutilR.lib basesplitterR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
 				SubSystem="2"
@@ -367,6 +368,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -503,6 +505,7 @@
 				AdditionalDependencies="zlibR.lib strmbaseRU.lib dsutilRU.lib basesplitterRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
 				SubSystem="2"
@@ -513,6 +516,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

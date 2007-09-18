@@ -41,7 +41,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -99,7 +98,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -157,7 +155,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -215,7 +212,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -273,7 +269,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="REGISTER_FILTER;WIN32;_DEBUG;_USRDLL"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -286,12 +281,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="strmbaseD.lib dsutilD.lib basesplitterD.lib libdiracD.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -346,7 +339,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -359,14 +351,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="strmbaseR.lib dsutilR.lib basesplitterR.lib libdiracR.lib"
+				AdditionalDependencies="strmbaseR.lib dsutilR.lib basesplitterR.lib libdiracR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -374,6 +365,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -420,7 +412,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="REGISTER_FILTER;WIN32;_DEBUG;_USRDLL"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -433,13 +424,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
 				AdditionalDependencies="strmbaseDU.lib dsutilDU.lib basesplitterDU.lib libdiracD.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -494,7 +483,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="./libdirac"
 				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL"
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -507,15 +495,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				AdditionalDependencies="strmbaseRU.lib dsutilRU.lib basesplitterRU.lib libdiracR.lib"
+				AdditionalDependencies="strmbaseRU.lib dsutilRU.lib basesplitterRU.lib libdiracR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -523,6 +509,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
