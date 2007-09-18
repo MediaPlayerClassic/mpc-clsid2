@@ -77,6 +77,8 @@
 #define IDF_SHADER_SPOTLIGHT            710
 #define IDF_SHADER_WAVE                 711
 #define IDF_SHADER_PROCAMP              712
+#define IDF_SHADER_LEVELS               713
+#define IDF_SHADER_NIGHTVISION          714
 #define ID_FILE_OPENMEDIA               800
 #define ID_FILE_OPENDVD                 801
 #define ID_FILE_OPENDEVICE              802
@@ -88,9 +90,6 @@
 #define ID_FILE_SAVE_THUMBNAILS         808
 #define ID_FILE_LOAD_SUBTITLE           809
 #define ID_FILE_SAVE_SUBTITLE           810
-#define ID_FILE_ISDB_UPLOAD             811
-#define ID_FILE_ISDB_DOWNLOAD           812
-#define ID_FILE_ISDB_SEARCH             813
 #define ID_FILE_PROPERTIES              814
 #define ID_FILE_CONVERT                 815
 #define ID_FILE_EXIT                    816
@@ -207,7 +206,6 @@
 #define ID_HELP_HOMEPAGE                938
 #define ID_HELP_DOCUMENTATION           939
 #define ID_HELP_SHOWCOMMANDLINESWITCHES 940
-#define ID_HELP_DONATE                  941
 #define ID_HELP_ABOUT                   942
 #define ID_BOSS                         943
 #define ID_DUMMYSEPARATOR               944
@@ -272,7 +270,6 @@
 #define IDD_MEDIATYPES_DLG              10002
 #define IDD_AUTH_DLG                    10003
 #define IDD_SAVE_DLG                    10004
-#define IDD_SUBTITLEDL_DLG              10005
 #define IDD_CONVERT_DLG                 10006
 #define IDD_CONVERTPROPS_DLG            10007
 #define IDD_CONVERTRES_DLG              10008
@@ -307,7 +304,6 @@
 #define IDD_PPAGEOUTPUT                 10039
 #define IDD_PPAGEWEBSERVER              10040
 #define IDD_PPAGEAUDIODEC               10041
-#define IDD_PPAGESUBDB                  10042
 #define IDD_SAVETEXTFILEDIALOGTEMPL     10043
 #define IDD_SAVETEXTFILEDIALOGTEMPL_400 10044
 #define IDD_CAPTURE_DLG                 10045
@@ -570,7 +566,6 @@
 #define IDS_RS_MPABOOST                 13117
 #define IDS_RS_AACSC                    13118
 #define IDS_RS_VMRSYNCFIX               13119
-#define IDS_RS_ISDB                     13120
 #define IDS_RS_POW2TEX                  13121
 #define IDS_R_INTERNAL_FILTERS          13122
 #define IDS_RS_WEBROOT                  13123

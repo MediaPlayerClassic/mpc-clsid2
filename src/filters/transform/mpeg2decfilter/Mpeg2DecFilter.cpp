@@ -46,8 +46,10 @@ const AMOVIESETUP_MEDIATYPE sudPinTypesIn[] =
 	{&MEDIATYPE_MPEG2_PACK, &MEDIASUBTYPE_MPEG2_VIDEO},
 	{&MEDIATYPE_MPEG2_PES, &MEDIASUBTYPE_MPEG2_VIDEO},
 	{&MEDIATYPE_Video, &MEDIASUBTYPE_MPEG2_VIDEO},
+#ifndef MPEG2ONLY
 	{&MEDIATYPE_Video, &MEDIASUBTYPE_MPEG1Packet},
 	{&MEDIATYPE_Video, &MEDIASUBTYPE_MPEG1Payload},
+#endif
 };
 
 const AMOVIESETUP_MEDIATYPE sudPinTypesOut[] =
@@ -63,7 +65,7 @@ const AMOVIESETUP_PIN sudpPins[] =
 
 const AMOVIESETUP_FILTER sudFilter[] =
 {
-	{&__uuidof(CMpeg2DecFilter), L"MPV Decoder Filter", 0x40000002, countof(sudpPins), sudpPins},
+	{&__uuidof(CMpeg2DecFilter), L"MPEG Video Decoder (Gabest)", 0x00600001, countof(sudpPins), sudpPins},
 };
 
 CFactoryTemplate g_Templates[] =
@@ -386,6 +388,9 @@ void CMpeg2DecFilter::SetTypeSpecificFlags(IMediaSample* pMS)
 			if(mt.formattype == FORMAT_VideoInfo2 && (((VIDEOINFOHEADER2*)mt.pbFormat)->dwInterlaceFlags & AMINTERLACE_IsInterlaced))
 			{
 				// props.dwTypeSpecificFlags |= AM_VIDEO_FLAG_WEAVE;
+
+				if(m_dec->m_info.m_sequence->flags & SEQ_FLAG_PROGRESSIVE_SEQUENCE)
+					props.dwTypeSpecificFlags |= AM_VIDEO_FLAG_WEAVE;
 
 				if(m_fb.flags & PIC_FLAG_TOP_FIELD_FIRST)
 					props.dwTypeSpecificFlags |= AM_VIDEO_FLAG_FIELD1FIRST;
@@ -794,6 +799,7 @@ HRESULT CMpeg2DecFilter::CheckConnect(PIN_DIRECTION dir, IPin* pPin)
 			/*&& clsid != CLSID_OverlayMixer2*/
 			&& clsid != CLSID_VideoMixingRenderer 
 			&& clsid != CLSID_VideoMixingRenderer9
+			&& clsid != GUIDFromCString(_T("{FA10746C-9B63-4b6c-BC49-FC300EA5F256}")) // EVR
 			&& clsid != GUIDFromCString(_T("{04FE9017-F873-410E-871E-AB91661A4EF7}")) // ffdshow
 			&& (clsid != GUIDFromCString(_T("{93A22E7A-5091-45ef-BA61-6DA26156A5D0}")) || ver < 0x0234) // dvobsub
 			&& (clsid != GUIDFromCString(_T("{9852A670-F845-491b-9BE6-EBD841B8A613}")) || ver < 0x0234) // dvobsub auto

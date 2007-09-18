@@ -57,7 +57,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="CDXAReader.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -123,14 +122,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="asyncreaderR.lib strmbaseR.lib"
+				AdditionalDependencies="asyncreaderR.lib strmbaseR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="CDXAReader.def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -138,6 +136,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -200,7 +199,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="CDXAReader.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -266,14 +264,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="asyncreaderRU.lib strmbaseRU.lib"
+				AdditionalDependencies="asyncreaderRU.lib strmbaseRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="CDXAReader.def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -281,6 +278,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

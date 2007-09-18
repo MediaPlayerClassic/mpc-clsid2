@@ -57,7 +57,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib;../../../../lib/detours"
 				ModuleDefinitionFile="Mpeg2DecFilter.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -110,7 +109,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL"
+				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL;MPEG2ONLY"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -123,15 +122,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="idct_mmx.obj motion_comp_mmx.obj decssR.lib dsutilR.lib strmbaseR.lib basevideofilterR.lib"
+				AdditionalDependencies="idct_mmx.obj motion_comp_mmx.obj decssR.lib dsutilR.lib strmbaseR.lib basevideofilterR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib;../../../../lib/detours"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="Mpeg2DecFilter.def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -202,7 +200,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib;../../../../lib/detours"
 				ModuleDefinitionFile="Mpeg2DecFilter.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -256,7 +253,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL"
+				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL;MPEG2ONLY"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -269,14 +266,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="idct_mmx.obj motion_comp_mmx.obj decssRU.lib dsutilRU.lib strmbaseRU.lib basevideofilterRU.lib"
+				AdditionalDependencies="idct_mmx.obj motion_comp_mmx.obj decssRU.lib dsutilRU.lib strmbaseRU.lib basevideofilterRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib;../../../../lib/detours"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="Mpeg2DecFilter.def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -284,6 +280,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

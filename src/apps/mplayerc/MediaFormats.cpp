@@ -198,25 +198,25 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("CD Audio Track"), _T("cda"), true, _T("Windows 2000/XP or better")));
 		ADDFMT((_T("FLIC file"), _T("fli flc flic")));
 		ADDFMT((_T("DVD2AVI Project file"), _T("d2v")));
-		ADDFMT((_T("MPEG4 file "), _T("mp4 m4v m4p m4b 3gp 3gpp 3g2 3gp2")));
+		ADDFMT((_T("MPEG4 file "), _T("mp4 m4v m4p m4b hdmov 3gp 3gpp")));
 		ADDFMT((_T("MPEG4 Audio file "), _T("m4a aac"), true));
 		ADDFMT((_T("Matroska Media file"), _T("mkv")));
 		ADDFMT((_T("Matroska Audio file"), _T("mka"), true));
 		ADDFMT((_T("Smacker/Bink Media file"), _T("smk bik"), false, _T("smackw32/binkw32.dll in dll path")));
 		ADDFMT((_T("ratdvd file"), _T("ratdvd"), false, _T("ratdvd media file")));
 		ADDFMT((_T("RoQ Media file"), _T("roq"), false));
-		ADDFMT((_T("Real Media file "), _T("rm ram rmvb rpm"), false, _T("RealOne or codec pack")));
-		ADDFMT((_T("Real Audio file "), _T("ra"), true, _T("RealOne or codec pack")));
-		ADDFMT((_T("Real Script file"), _T("rt rp smi smil"), false, _T("RealOne or codec pack"), RealMedia));
+		ADDFMT((_T("Real Media file "), _T("rm ram rpm rmm rnx"), false, _T("RealPlayer or codec pack"), RealMedia));
+		ADDFMT((_T("Real Audio file "), _T("ra"), true, _T("RealOne or codec pack"), RealMedia));
+		ADDFMT((_T("Real Script file"), _T("rt rp smi smil"), false, _T("RealPlayer or codec pack"), RealMedia));
 		ADDFMT((_T("Dirac Video file"), _T("drc"), false));
 		ADDFMT((_T("DirectShow Media file"), _T("dsm dsv dsa dss")));
 		ADDFMT((_T("Musepack file"), _T("mpc"), true));
 		ADDFMT((_T("Flash Video file "), _T("flv")));
 		ADDFMT((_T("Shockwave Flash file"), _T("swf"), false, _T("ShockWave ActiveX control"), ShockWave));
-		ADDFMT((_T("Quicktime file "), _T("mov qt amr"), false, _T("QuickTime Player or codec pack"), QuickTime));
+		ADDFMT((_T("Quicktime file "), _T("mov qt amr 3g2 3gp2"), false, _T("QuickTime Player or codec pack"), QuickTime));
 		ADDFMT((_T("Image file"), _T("jpeg jpg bmp gif pic png dib tiff tif")));
 		ADDFMT((_T("Playlist file"), _T("asx m3u pls wvx wax wmx mpcpl")));
-		ADDFMT((_T("Other "), _T("divx vp6")));
+		ADDFMT((_T("Other "), _T("divx vp6 rmvb")));
 #undef ADDFMT
 
 		m_iRtspHandler = (engine_t)AfxGetApp()->GetProfileInt(_T("FileFormats"), _T("RtspHandler"), (int)RealMedia);

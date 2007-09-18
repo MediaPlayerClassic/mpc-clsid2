@@ -545,12 +545,6 @@ public:
 	afx_msg void OnUpdateFileLoadsubtitle(CCmdUI* pCmdUI);
 	afx_msg void OnFileSavesubtitle();
 	afx_msg void OnUpdateFileSavesubtitle(CCmdUI* pCmdUI);
-	afx_msg void OnFileISDBSearch();
-	afx_msg void OnUpdateFileISDBSearch(CCmdUI* pCmdUI);
-	afx_msg void OnFileISDBUpload();
-	afx_msg void OnUpdateFileISDBUpload(CCmdUI* pCmdUI);
-	afx_msg void OnFileISDBDownload();
-	afx_msg void OnUpdateFileISDBDownload(CCmdUI* pCmdUI);
 	afx_msg void OnFileProperties();
 	afx_msg void OnUpdateFileProperties(CCmdUI* pCmdUI);
 	afx_msg void OnFileClosePlaylist();
@@ -602,6 +596,7 @@ public:
 
 	afx_msg void OnPlayPlay();
 	afx_msg void OnPlayPause();
+	afx_msg void OnPlayPauseI();
 	afx_msg void OnPlayPlaypause();
 	afx_msg void OnPlayStop();
 	afx_msg void OnUpdatePlayPauseStop(CCmdUI* pCmdUI);
@@ -660,7 +655,6 @@ public:
 
 	afx_msg void OnHelpHomepage();
 	afx_msg void OnHelpDocumentation();
-	afx_msg void OnHelpDonate();
 
 	afx_msg void OnClose();
 };

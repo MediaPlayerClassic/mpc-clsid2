@@ -150,7 +150,7 @@ HRESULT CMpegSplitterFile::Init()
 	else ; // TODO: in this case disable seeking, or try doing something less drastical...
 
 #ifndef DEBUG
-	if(m_streams[video].GetCount() || m_streams[subpic].GetCount())
+	if(m_streams[video].GetCount() && m_streams[subpic].GetCount())
 	{
 		stream s;
 		s.mt.majortype = MEDIATYPE_Video;
@@ -416,6 +416,29 @@ DWORD CMpegSplitterFile::AddStream(WORD pid, BYTE pesid, DWORD len)
 			CMpegSplitterFile::aachdr h;
 			if(!m_streams[audio].Find(s) && Read(h, len, &s.mt))
 				type = audio;
+		}
+	}
+	else if (pid == 0x1100) // AVCHD ac3 audio
+	{
+		if(!m_streams[audio].Find(s))
+		{
+			__int64 pos = GetPos();
+
+			if(type == unknown)
+			{
+				CMpegSplitterFile::ac3hdr h;
+				if(Read(h, len, &s.mt))
+					type = audio;
+			}
+
+			Seek(pos);
+
+			if(type == unknown)
+			{
+				CMpegSplitterFile::dtshdr h;
+				if(Read(h, len, &s.mt))
+					type = audio;
+			}
 		}
 	}
 	else if(pesid == 0xbd) // private stream 1

@@ -192,8 +192,8 @@ FONT 8, "MS Shell Dlg", 400, 0, 0xB1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
     LTEXT           "Media Player Classic",IDC_STATIC1,40,10,126,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2002-2006 Gabest",IDC_STATIC,40,21,113,8
-    LTEXT           "Version: 6.4.9.0",IDC_STATIC,40,33,92,8
+    LTEXT           "Copyright (C) 2002-2007 Gabest",IDC_STATIC,40,21,113,8
+    LTEXT           "Version: 6.4.9.1",IDC_STATIC,40,33,92,8
     PUSHBUTTON      "OK",IDOK,160,8,50,14,WS_GROUP
     LTEXT           "This program is freeware and released under the GNU General Public License.\nDistribution in Codec Packs is allowed, but the author (Gabest) is not liable for the additional content.",IDC_STATIC,11,47,199,34
 END
@@ -331,16 +331,6 @@ BEGIN
     GROUPBOX        "Warning",IDC_STATIC,5,99,284,35
     LTEXT           "RealMedia and QuickTime formats can be subtitled by setting their special DirectX 7 or DirectX 9 renderers.",IDC_STATIC,14,178,267,16
     CONTROL         "Round up to power of two",IDC_CHECK_SPCPOW2TEX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,184,79,97,10
-END
-
-IDD_PPAGESUBDB DIALOGEX 0, 0, 296, 203
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-FONT 8, "MS Shell Dlg", 400, 0, 0xEE
-BEGIN
-    LTEXT           "Base URL of the online subtitle database:",IDC_STATIC,5,8,133,8
-    COMBOBOX        IDC_COMBO1,29,22,205,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Test",IDC_BUTTON1,239,21,50,14
-    LTEXT           "http://",IDC_STATIC,5,24,22,8
 END
 
 IDD_PPAGEFORMATS DIALOGEX 0, 0, 296, 198
@@ -785,16 +775,6 @@ BEGIN
     EDITTEXT        IDC_EDIT9,7,114,282,14,ES_AUTOHSCROLL
 END
 
-IDD_SUBTITLEDL_DLG DIALOGEX 0, 0, 377, 158
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Subtitles available online"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "Download && Open",IDOK,272,136,98,14
-    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,363,124
-    CONTROL         "Replace currently loaded subtitles",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,138,124,10
-END
-
 IDD_FILEPROPRES DIALOGEX 0, 0, 234, 202
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1003,13 +983,6 @@ BEGIN
         BOTTOMMARGIN, 200
     END
 
-    IDD_PPAGESUBDB, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 289
-        BOTTOMMARGIN, 200
-    END
-
     IDD_PPAGEFORMATS, DIALOG
     BEGIN
         VERTGUIDE, 6
@@ -1172,14 +1145,6 @@ BEGIN
         VERTGUIDE, 289
     END
 
-    IDD_SUBTITLEDL_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 370
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 151
-    END
-
     IDD_FILEPROPRES, DIALOG
     BEGIN
         VERTGUIDE, 8
@@ -1267,6 +1232,8 @@ IDF_SHADER_SHARPEN      FILE                    "res\\shaders\\sharpen.psh"
 IDF_SHADER_SPHERE       FILE                    "res\\shaders\\sphere.psh"
 IDF_SHADER_SPOTLIGHT    FILE                    "res\\shaders\\spotlight.psh"
 IDF_SHADER_WAVE         FILE                    "res\\shaders\\wave.psh"
+IDF_SHADER_LEVELS       FILE                    "res\\shaders\\levels.psh"
+IDF_SHADER_NIGHTVISION  FILE                    "res\\shaders\\nightvision.psh"
 IDF_DEFAULT_CSS         FILE                    "res\\web\\default.css"
 IDF_VBR_GIF             FILE                    "res\\web\\vbg.gif"
 IDF_VBS_GIF             FILE                    "res\\web\\vbs.GIF"
@@ -1394,8 +1361,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,4,9,0
- PRODUCTVERSION 6,4,9,0
+ FILEVERSION 6,4,9,1
+ PRODUCTVERSION 6,4,9,1
  FILEFLAGSMASK 0x1fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1410,15 +1377,15 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "http://gabest.org/"
+            VALUE "Comments", ""
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "Media Player Classic"
-            VALUE "FileVersion", "6, 4, 9, 0"
+            VALUE "FileVersion", "6, 4, 9, 1"
             VALUE "InternalName", "Media Player Classic"
-            VALUE "LegalCopyright", "Copyright (C) 2002-2006 Gabest"
-            VALUE "OriginalFilename", "mplayerc.EXE"
+            VALUE "LegalCopyright", "Copyright (C) 2002-2007 Gabest"
+            VALUE "OriginalFilename", "mplayerc.exe"
             VALUE "ProductName", "Media Player Classic"
-            VALUE "ProductVersion", "6, 4, 9, 0"
+            VALUE "ProductVersion", "6, 4, 9, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -1450,13 +1417,7 @@ BEGIN
         MENUITEM "Save Thumbnails...",          ID_FILE_SAVE_THUMBNAILS
         MENUITEM SEPARATOR
         MENUITEM "&Load Subtitle...\tCtrl+L",   ID_FILE_LOAD_SUBTITLE
-        MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE
-        POPUP "Subtitle Database"
-        BEGIN
-            MENUITEM "Search...",                   ID_FILE_ISDB_SEARCH
-            MENUITEM "Upload...",                   ID_FILE_ISDB_UPLOAD
-            MENUITEM "Download...",                 ID_FILE_ISDB_DOWNLOAD
-        END
+        MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE       
         MENUITEM SEPARATOR
         MENUITEM "P&roperties",                 ID_FILE_PROPERTIES
         MENUITEM SEPARATOR
@@ -1597,8 +1558,6 @@ BEGIN
         MENUITEM "Home Page",                   ID_HELP_HOMEPAGE
         MENUITEM "Documentation (sf.net)",      ID_HELP_DOCUMENTATION
         MENUITEM "Command Line Switches",       ID_HELP_SHOWCOMMANDLINESWITCHES
-        MENUITEM SEPARATOR
-        MENUITEM "Donate!",                     ID_HELP_DONATE
         MENUITEM SEPARATOR
         MENUITEM "&About...",                   ID_HELP_ABOUT
     END
@@ -1750,12 +1709,6 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&Load Subtitle...\tCtrl+L",   ID_FILE_LOAD_SUBTITLE
             MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE
-            POPUP "Subtitle Database"
-            BEGIN
-                MENUITEM "Search...",                   ID_FILE_ISDB_SEARCH
-                MENUITEM "Upload...",                   ID_FILE_ISDB_UPLOAD
-                MENUITEM "Download...",                 ID_FILE_ISDB_DOWNLOAD
-            END
             MENUITEM SEPARATOR
             MENUITEM "Prope&rties",                 ID_FILE_PROPERTIES
             MENUITEM SEPARATOR
@@ -1870,8 +1823,6 @@ BEGIN
         BEGIN
             MENUITEM "Home Page",                   ID_HELP_HOMEPAGE
             MENUITEM "Command Line Switches",       ID_HELP_SHOWCOMMANDLINESWITCHES
-            MENUITEM SEPARATOR
-            MENUITEM "Donate!",                     ID_HELP_DONATE
             MENUITEM SEPARATOR
             MENUITEM "&About...",                   ID_HELP_ABOUT
         END
@@ -2079,7 +2030,6 @@ BEGIN
     IDD_PPAGEOUTPUT         "Playback::Output"
     IDD_PPAGEWEBSERVER      "Player::Web Interface"
     IDD_PPAGEAUDIODEC       "Internal Filters::Audio Decoders"
-    IDD_PPAGESUBDB          "Subtitles::Database"
 END
 
 STRINGTABLE 
@@ -2230,12 +2180,12 @@ BEGIN
     IDS_SRC_VTS             "6.4.0.0\nOpen VTS_xx_0.ifo to load VTS_xx_x.vob files in one piece"
     IDS_SRC_FLIC            "6.4.0.0"
     IDS_SRC_D2V             "6.4.0.0"
-    IDS_SRC_DTSAC3          "6.4.0.1"
+    IDS_SRC_DTSAC3          "6.4.0.2"
     IDS_SRC_SHOUTCAST       "6.4.0.1"
-    IDS_SRC_REALMEDIA       "6.4.1.1\nRealMedia format categories must be set to 'DirectShow' to make it load\nDoesn't support streaming"
-    IDS_SRC_MATROSKA        "6.4.2.9"
+    IDS_SRC_REALMEDIA       "6.4.1.1\nRealMedia format categories must be set to 'DirectShow' to make it load\nDoesn't support streaming!"
+    IDS_SRC_MATROSKA        "6.4.3.0"
     IDS_SRC_ROQ             "6.4.0.0"
-    IDS_SRC_OGG             "6.4.0.2"
+    IDS_SRC_OGG             "6.4.0.3"
     IDS_SRC_NUT             "6.4.0.0\nBased on ""NUT Open Container Format DRAFT 20030906""\nStill very incomplete, if you have or can make test files, please contact me."
     IDS_SRC_DIRAC           "6.4.0.1\nBased on libdirac 0.5.0"
     IDS_SRC_DSM             "6.4.0.5"
@@ -2244,24 +2194,23 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SRC_MPA             "6.4.0.2\nSource filter for mp3 and aac"
-    IDS_SRC_MP4             "6.4.0.2"
+    IDS_SRC_MP4             "6.4.0.3"
     IDS_TRA_RV              "6.4.1.0\nRequires RealVideo decoder dlls, RV10 also works with ffdshow"
     IDS_TRA_RA              "6.4.1.0\nRequires RealAudio decoder dlls, DNET also works with ac3filter"
     IDS_TRA_MPEG1           "6.4.0.3\nBased on libmpeg2 (mpeg1 video decoding is bogus)"
     IDS_TRA_MPEG2           "6.4.0.3\nBased on libmpeg2"
-    IDS_TRA_MPA             "6.4.0.3\nBased on libmad, liba52, libdts, libfaad"
+    IDS_TRA_MPA             "6.4.0.4\nBased on libmad, liba52, libdts, libfaad"
     IDS_TRA_LPCM            "6.4.0.1"
     IDS_TRA_AC3             "6.4.0.1\nBased on liba52 0.7.4, http://liba52.sourceforge.net/"
     IDS_TRA_DTS             "6.4.0.1\nBased on libdts 0.0.2, http://www.videolan.org/dtsdec.html"
-    IDS_TRA_AAC             "6.4.0.1\nBased on libfaad 2.0, http://www.audiocoding.com/"
+    IDS_TRA_AAC             "6.4.0.2\nBased on libfaad 2.6, http://www.audiocoding.com/"
     IDS_TRA_DIRAC           "6.4.0.1\nBased on libdirac 0.5.0"
     IDS_TRA_PS2AUD          "6.4.0.1\nDecodes audio streams of PSS files"
-    IDS_SRC_FLV             "6.4.0.1"
+    IDS_SRC_FLV             "6.4.0.2"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_RS_ISDB             "ISDb"
     IDS_RS_POW2TEX          "SPCPow2Tex"
     IDS_R_INTERNAL_FILTERS  "Internal Filters"
     IDS_RS_WEBROOT          "WebRoot"
@@ -2396,4 +2345,5 @@ LANGUAGE 9, 1
 #endif
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
 

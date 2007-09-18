@@ -12,6 +12,12 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
 
+#if _MSC_VER >= 1400 // VS2005 changed result of OnNCHitTest
+#define HITTEST_RET LRESULT
+#else
+#define HITTEST_RET UINT
+#endif
+
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 

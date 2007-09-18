@@ -73,7 +73,7 @@ s_filters[] =
 	{_T("RealVideo"), 1, TRA_RV, IDS_TRA_RV, NULL},
 	{_T("RealAudio"), 1, TRA_RA, IDS_TRA_RA, NULL},
 	{_T("Vorbis"), 1, TRA_VORBIS, 0, NULL /* TODO: CreateInstance<CMpaDecFilter>*/},
-	__if_exists(CFLVVideoDecoder) {{_T("VP62"), 1, TRA_VP62, 0, NULL},}
+//	__if_exists(CFLVVideoDecoder) {{_T("VP62"), 1, TRA_VP62, 0, NULL},}
 };
 
 IMPLEMENT_DYNAMIC(CPPageInternalFiltersListBox, CCheckListBox)

@@ -45,6 +45,9 @@
 
 #include "PixelShaderCompiler.h"
 
+CCritSec g_ffdshowReceive;
+bool queueu_ffdshow_support = false;
+
 bool IsVMR9InGraph(IFilterGraph* pFG)
 {
 	BeginEnumFilters(pFG, pEF, pBF)
@@ -1000,7 +1003,7 @@ STDMETHODIMP_(bool) CDX9AllocatorPresenter::Paint(bool fAll)
 				switch(iDX9Resizer)
 				{
 					case 3: A = -0.60f; break;
-					case 4: A = -0.75f; break;
+					case 4: A = -0.751f; break;     // FIXME : 0.75 crashes recent D3D, or eat CPU
 					case 5: A = -1.00f; break;
 				}
 
@@ -1029,6 +1032,11 @@ STDMETHODIMP_(bool) CDX9AllocatorPresenter::Paint(bool fAll)
 					rSrcVid.left &= ~1; rSrcVid.right &= ~1;
 					rSrcVid.top &= ~1; rSrcVid.bottom &= ~1;
 					hr = m_pD3DDev->StretchRect(m_pVideoSurface[0], rSrcVid, pBackBuffer, rDstVid, m_filter);
+
+					// Support ffdshow queueing
+					// m_pD3DDev->StretchRect may fail if ffdshow is using queue output samples.
+					// Here we don't want to show the black buffer.
+					if(FAILED(hr)) return false;
 				}
 			}
 		}
@@ -1197,6 +1205,7 @@ class COuterVMR9
 	, public IVideoWindow
 	, public IBasicVideo2
 	, public IVMRWindowlessControl
+	, public IVMRffdshow9
 {
 	CComPtr<IUnknown> m_pVMR;
 
@@ -1220,6 +1229,8 @@ public:
 				return GetInterface((IBasicVideo*)this, ppv);
 			if(riid == __uuidof(IBasicVideo2))
 				return GetInterface((IBasicVideo2*)this, ppv);
+			if(riid == __uuidof(IVMRffdshow9)) // Support ffdshow queueing. We show ffdshow that this is patched Media Player Classic.
+				return GetInterface((IVMRffdshow9*)this, ppv);
 /*			if(riid == __uuidof(IVMRWindowlessControl))
 				return GetInterface((IVMRWindowlessControl*)this, ppv);
 */		}
@@ -1427,6 +1438,13 @@ public:
 		}
 
 		return E_NOTIMPL;
+	}
+
+	// IVMRffdshow9
+	STDMETHODIMP support_ffdshow()
+	{
+		queueu_ffdshow_support = true;
+		return S_OK;
 	}
 };
 

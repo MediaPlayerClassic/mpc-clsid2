@@ -43,12 +43,12 @@ BEGIN
     BEGIN
         BLOCK "040e04b0"
         BEGIN
-            VALUE "Comments", "http://gabest.org/"
+            VALUE "Comments", ""
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "UDP Reader Filter"
             VALUE "FileVersion", "1, 0, 0, 0"
             VALUE "InternalName", "UDP Reader Filter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2006 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
             VALUE "OriginalFilename", "UDPReader.ax"
             VALUE "ProductName", "UDP Reader Filter"
             VALUE "ProductVersion", "1, 0, 0, 0"
@@ -113,4 +113,5 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
 

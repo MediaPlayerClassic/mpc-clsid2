@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VSFilter", "VSFilter_vs2005.vcproj", "{F671100C-469F-4723-AAC4-B7FE4F5B8DC4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FC70988B-1AE5-4381-866D-4F405E28AC42} = {FC70988B-1AE5-4381-866D-4F405E28AC42}
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E} = {7CDC5863-9F36-468D-A634-6D7799E0A15E}
 		{5E56335F-0FB1-4EEA-B240-D8DC5E0608E4} = {5E56335F-0FB1-4EEA-B240-D8DC5E0608E4}
 		{D514EA4D-EAFB-47A9-A437-A582CA571251} = {D514EA4D-EAFB-47A9-A437-A582CA571251}
 		{54DDA60F-E528-4D07-A152-960A1E818680} = {54DDA60F-E528-4D07-A152-960A1E818680}
@@ -20,8 +19,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dsutil", "..\..\..\dsutil\dsutil_vs2005.vcproj", "{FC70988B-1AE5-4381-866D-4F405E28AC42}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "basevideofilter", "..\basevideofilter\basevideofilter_vs2005.vcproj", "{54DDA60F-E528-4D07-A152-960A1E818680}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "baseclasses", "C:\Program Files\Microsoft DirectX 9.0 SDK\Samples\C++\DirectShow\BaseClasses\baseclasses.vcproj", "{7CDC5863-9F36-468D-A634-6D7799E0A15E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libssf", "..\..\..\subtitles\libssf\libssf.vcproj", "{DD9D2D92-2241-408A-859E-B85D444B7E3C}"
 EndProject
@@ -165,37 +162,6 @@ Global
 		{54DDA60F-E528-4D07-A152-960A1E818680}.Release|Win32.ActiveCfg = Release lib|Win32
 		{54DDA60F-E528-4D07-A152-960A1E818680}.Release|Win32.Build.0 = Release lib|Win32
 		{54DDA60F-E528-4D07-A152-960A1E818680}.Release|Win64 (AMD64).ActiveCfg = Release Unicode lib|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug lib|Win32.ActiveCfg = Debug|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug lib|Win32.Build.0 = Debug|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug lib|Win64 (AMD64).ActiveCfg = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug lib|Win64 (AMD64).Build.0 = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode lib|Win32.ActiveCfg = Debug Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode lib|Win64 (AMD64).ActiveCfg = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode lib|Win64 (AMD64).Build.0 = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode|Win32.ActiveCfg = Debug Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode|Win32.Build.0 = Debug Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode|Win64 (AMD64).ActiveCfg = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug Unicode|Win64 (AMD64).Build.0 = Debug Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug|Win32.Build.0 = Debug|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug|Win64 (AMD64).ActiveCfg = Debug|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Debug|Win64 (AMD64).Build.0 = Debug|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release lib|Win32.ActiveCfg = Release|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release lib|Win32.Build.0 = Release|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release lib|Win64 (AMD64).ActiveCfg = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release lib|Win64 (AMD64).Build.0 = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode lib|Win32.ActiveCfg = Release Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode lib|Win32.Build.0 = Release Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode lib|Win64 (AMD64).ActiveCfg = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode lib|Win64 (AMD64).Build.0 = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode|Win32.ActiveCfg = Release Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode|Win32.Build.0 = Release Unicode|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode|Win64 (AMD64).ActiveCfg = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release Unicode|Win64 (AMD64).Build.0 = Release Unicode|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release|Win32.ActiveCfg = Release|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release|Win32.Build.0 = Release|Win32
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release|Win64 (AMD64).ActiveCfg = Release|Win64 (AMD64)
-		{7CDC5863-9F36-468D-A634-6D7799E0A15E}.Release|Win64 (AMD64).Build.0 = Release|Win64 (AMD64)
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug lib|Win32.ActiveCfg = Debug Unicode|Win32
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug lib|Win32.Build.0 = Debug Unicode|Win32
 		{DD9D2D92-2241-408A-859E-B85D444B7E3C}.Debug lib|Win64 (AMD64).ActiveCfg = Debug Unicode|Win32

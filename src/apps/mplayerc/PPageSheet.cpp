@@ -47,7 +47,6 @@ CPPageSheet::CPPageSheet(LPCTSTR pszCaption, IFilterGraph* pFG, CWnd* pParentWnd
 	AddPage(&m_externalfilters);
 	AddPage(&m_subtitles);
 	AddPage(&m_substyle);
-	AddPage(&m_subdb);
 	AddPage(&m_tweaks);
 
 	EnableStackedTabs(FALSE);
@@ -117,4 +116,5 @@ BOOL CTreePropSheetTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
 
 	return __super::PreCreateWindow(cs);
 }
+
 

@@ -354,9 +354,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlibR.lib strmbaseR.lib dsutilR.lib basesplitterR.lib"
+				AdditionalDependencies="zlibR.lib strmbaseR.lib dsutilR.lib basesplitterR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
 				SubSystem="2"
 				TargetMachine="1"
@@ -499,9 +500,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlibR.lib strmbaseRU.lib dsutilRU.lib basesplitterRU.lib"
+				AdditionalDependencies="zlibR.lib strmbaseRU.lib dsutilRU.lib basesplitterRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile="$(ProjectName).def"
 				SubSystem="2"
 				TargetMachine="1"

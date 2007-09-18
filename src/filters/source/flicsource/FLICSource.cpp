@@ -729,7 +729,12 @@ void CFLICStream::_deltachunk()
 
 				if(count >= 0)
 				{
-					m_flic.Read(ptr, count << 1);
+					// Fixed vulnerability
+					if ( m_hdr.x*m_hdr.y*32>>3 - (long)(m_pFrameBuffer - ptr) < (count << 1)) {
+						m_flic.Read(ptr, count << 1);
+					} else {
+						ASSERT(FALSE);
+					}
 					ptr += count << 1;
 				}
 				else

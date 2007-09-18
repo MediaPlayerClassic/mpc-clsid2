@@ -31,6 +31,13 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+// VS2005 changed result of OnNCHitTest
+#if _MSC_VER >= 1400
+#define HITTEST_RET LRESULT
+#else
+#define HITTEST_RET UINT
+#endif
+
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components

@@ -160,11 +160,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Infblock.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Infcodes.c"
+				RelativePath=".\Infback.c"
 				>
 			</File>
 			<File
@@ -177,10 +173,6 @@
 			</File>
 			<File
 				RelativePath=".\Inftrees.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Infutil.c"
 				>
 			</File>
 			<File
@@ -201,15 +193,11 @@
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File
+				RelativePath=".\crc.h"
+				>
+			</File>
+			<File
 				RelativePath=".\deflate.h"
-				>
-			</File>
-			<File
-				RelativePath=".\infblock.h"
-				>
-			</File>
-			<File
-				RelativePath=".\infcodes.h"
 				>
 			</File>
 			<File
@@ -217,11 +205,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\inftrees.h"
+				RelativePath=".\inflate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\infutil.h"
+				RelativePath=".\inftrees.h"
 				>
 			</File>
 			<File

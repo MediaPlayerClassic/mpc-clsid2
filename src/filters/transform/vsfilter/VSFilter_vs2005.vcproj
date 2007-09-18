@@ -63,6 +63,7 @@
 				AdditionalDependencies="strmbaseDU.lib dsutilDU.lib subtitlesDU.lib subpicDU.lib basevideofilterDU.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
 				ModuleDefinitionFile=".\VSFilter.def"
 				SubSystem="2"
 			/>
@@ -71,6 +72,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -139,6 +141,7 @@
 				AdditionalDependencies="strmbaseD.lib dsutilD.lib subtitlesD.lib subpicD.lib basevideofilterD.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
 				ModuleDefinitionFile=".\VSFilter.def"
 				SubSystem="2"
 			/>
@@ -147,6 +150,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -212,10 +216,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="delayimp.lib strmbaseRU.lib dsutilRU.lib subtitlesRU.lib subpicRU.lib basevideofilterRU.lib"
+				AdditionalDependencies="delayimp.lib strmbaseRU.lib dsutilRU.lib subtitlesRU.lib subpicRU.lib basevideofilterRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				Version=""
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile=".\VSFilter.def"
 				DelayLoadDLLs="oleacc.dll"
 				SubSystem="2"
@@ -225,6 +231,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -291,10 +298,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="delayimp.lib strmbaseR.lib dsutilR.lib subtitlesR.lib subpicR.lib basevideofilterR.lib"
+				AdditionalDependencies="delayimp.lib strmbaseR.lib dsutilR.lib subtitlesR.lib subpicR.lib basevideofilterR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				Version=""
 				AdditionalLibraryDirectories="..\..\..\..\lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				ModuleDefinitionFile=".\VSFilter.def"
 				DelayLoadDLLs="oleacc.dll"
 				SubSystem="2"
@@ -304,6 +313,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

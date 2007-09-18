@@ -144,7 +144,7 @@ void CSizingControlBarG::NcPaintGripper(CDC* pDC, CRect rcClient)
     m_biHide.Paint(pDC);
 }
 
-LRESULT CSizingControlBarG::OnNcHitTest(CPoint point)
+HITTEST_RET CSizingControlBarG::OnNcHitTest(CPoint point)
 {
     CRect rcBar;
     GetWindowRect(rcBar);

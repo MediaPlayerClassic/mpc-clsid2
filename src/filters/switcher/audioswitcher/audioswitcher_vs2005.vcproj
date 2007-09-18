@@ -58,7 +58,6 @@
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="AudioSwitcher.def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -125,15 +124,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				RegisterOutput="true"
-				AdditionalDependencies="strmbaseR.lib"
+				AdditionalDependencies="strmbaseR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="MSVCRT.lib"
 				ModuleDefinitionFile="AudioSwitcher.def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -141,6 +139,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -204,7 +203,6 @@
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="AudioSwitcher.def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -276,10 +274,7 @@
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="AudioSwitcher.def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool

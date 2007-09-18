@@ -156,8 +156,8 @@ void CWord::Transform(CPoint org)
 	{
 		double x, y, z, xx, yy, zz;
 
-		x = scalex * mpPathPoints[i].x - org.x;
-		y = scaley * mpPathPoints[i].y - org.y;
+		x = scalex * (mpPathPoints[i].x + m_style.fontShiftX * mpPathPoints[i].y) - org.x;
+		y = scaley * (mpPathPoints[i].y + m_style.fontShiftY * mpPathPoints[i].x) - org.y;
 		z = 0;
 
 		xx = x*caz + y*saz;
@@ -1437,6 +1437,8 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 			params.Add(cmd.Mid(2)), cmd = cmd.Left(2);
 		else if(!cmd.Find(L"frx") || !cmd.Find(L"fry") || !cmd.Find(L"frz"))
 			params.Add(cmd.Mid(3)), cmd = cmd.Left(3);
+		else if(!cmd.Find(L"fax") || !cmd.Find(L"fay"))
+			params.Add(cmd.Mid(3)), cmd = cmd.Left(3);
 		else if(!cmd.Find(L"fr"))
 			params.Add(cmd.Mid(2)), cmd = cmd.Left(2);
 		else if(!cmd.Find(L"fscx") || !cmd.Find(L"fscy"))
@@ -1618,6 +1620,18 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 				}
 			}
 		}
+		else if(cmd == L"fax")
+		{
+			style.fontShiftX = !p.IsEmpty()
+				? CalcAnimation(wcstod(p, NULL), style.fontShiftX, fAnimate)
+				: org.fontShiftX;
+		}
+		else if(cmd == L"fay")
+		{
+			style.fontShiftY = !p.IsEmpty()
+				? CalcAnimation(wcstod(p, NULL), style.fontShiftY, fAnimate)
+				: org.fontShiftY;
+		}
 		else if(cmd == L"fe")
 		{
 			int n = wcstol(p, NULL, 10);
@@ -1738,10 +1752,10 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 			{
 				if(Effect* e = new Effect)
 				{
-					e->param[0] = (int)(sub->m_scalex*wcstol(params[0], NULL, 10)*8);
-					e->param[1] = (int)(sub->m_scaley*wcstol(params[1], NULL, 10)*8);
-					e->param[2] = (int)(sub->m_scalex*wcstol(params[2], NULL, 10)*8);
-					e->param[3] = (int)(sub->m_scaley*wcstol(params[3], NULL, 10)*8);
+					e->param[0] = (int)(sub->m_scalex*wcstod(params[0], NULL)*8);
+					e->param[1] = (int)(sub->m_scaley*wcstod(params[1], NULL)*8);
+					e->param[2] = (int)(sub->m_scalex*wcstod(params[2], NULL)*8);
+					e->param[3] = (int)(sub->m_scaley*wcstod(params[3], NULL)*8);
 
 					e->t[0] = e->t[1] = -1;
 
@@ -1761,8 +1775,8 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 			{
 				if(Effect* e = new Effect)
 				{
-					e->param[0] = (int)(sub->m_scalex*wcstol(params[0], NULL, 10)*8);
-					e->param[1] = (int)(sub->m_scaley*wcstol(params[1], NULL, 10)*8);
+					e->param[0] = (int)(sub->m_scalex*wcstod(params[0], NULL)*8);
+					e->param[1] = (int)(sub->m_scaley*wcstod(params[1], NULL)*8);
 
 					sub->m_effects[EF_ORG] = e;
 				}
@@ -1778,8 +1792,8 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 			{
 				if(Effect* e = new Effect)
 				{
-					e->param[0] = e->param[2] = (int)(sub->m_scalex*wcstol(params[0], NULL, 10)*8);
-					e->param[1] = e->param[3] = (int)(sub->m_scaley*wcstol(params[1], NULL, 10)*8);
+					e->param[0] = e->param[2] = (int)(sub->m_scalex*wcstod(params[0], NULL)*8);
+					e->param[1] = e->param[3] = (int)(sub->m_scaley*wcstod(params[1], NULL)*8);
 					e->t[0] = e->t[1] = 0;
 
 					sub->m_effects[EF_MOVE] = e;

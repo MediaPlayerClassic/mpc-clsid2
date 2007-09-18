@@ -43,7 +43,6 @@ const AMOVIESETUP_PIN sudpPins[] =
 const AMOVIESETUP_MEDIATYPE sudPinTypesIn2[] =
 {
 	{&MEDIATYPE_Video, &MEDIASUBTYPE_FLV4},
-	{&MEDIATYPE_Video, &MEDIASUBTYPE_VP62},
 };
 
 const AMOVIESETUP_MEDIATYPE sudPinTypesOut2[] =
@@ -62,7 +61,7 @@ const AMOVIESETUP_FILTER sudFilter[] =
 	{&__uuidof(CFLVSplitterFilter), L"FLV Splitter", MERIT_NORMAL, countof(sudpPins), sudpPins},
 	{&__uuidof(CFLVSourceFilter), L"FLV Source", MERIT_NORMAL, 0, NULL},
 	__if_exists(CFLVVideoDecoder) {
-	{&__uuidof(CFLVVideoDecoder), L"FLV Video Decoder", MERIT_NORMAL, countof(sudpPins2), sudpPins2},
+	{&__uuidof(CFLVVideoDecoder), L"FLV4 Video Decoder", MERIT_UNLIKELY, countof(sudpPins2), sudpPins2},
 	}
 };
 
@@ -263,13 +262,12 @@ HRESULT CFLVSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 		}
 		else if(t.TagType == 9 && fTypeFlagsVideo)
 		{
-			fTypeFlagsVideo = false;
-
-			name = L"Video";
-
 			VideoTag vt;
 			if(ReadTag(vt) && vt.FrameType == 1)
 			{
+				fTypeFlagsVideo = false;
+				name = L"Video";
+
 				mt.majortype = MEDIATYPE_Video;
 				mt.formattype = FORMAT_VideoInfo;
 				VIDEOINFOHEADER* vih = (VIDEOINFOHEADER*)mt.AllocFormatBuffer(sizeof(VIDEOINFOHEADER));
@@ -313,7 +311,21 @@ HRESULT CFLVSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 					m_pFile->BitRead(24);
 				case 4:
 					m_pFile->BitRead(8);
-					if((m_pFile->BitRead(16) & 0x80fe) != 0x0046) break;
+
+					if (m_pFile->BitRead(1)) {
+    				// Delta (inter) frame
+					fTypeFlagsVideo = true;
+   					break;
+					}
+					m_pFile->BitRead(6);
+					bool fSeparatedCoeff = !!m_pFile->BitRead(1);
+					m_pFile->BitRead(5);
+					int filterHeader = m_pFile->BitRead(2);
+					m_pFile->BitRead(1);
+					if (fSeparatedCoeff || !filterHeader) {
+				    m_pFile->BitRead(16);
+					}
+				
 
 					h = m_pFile->BitRead(8) * 16;
 					w = m_pFile->BitRead(8) * 16;

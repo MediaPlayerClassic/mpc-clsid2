@@ -180,8 +180,10 @@ enum
 	TRA_DIRAC=TRA_PS2AUD<<1,
 	TRA_VORBIS=TRA_DIRAC<<1,
 	TRA_FLV4=TRA_VORBIS<<1,
-	TRA_VP62=TRA_FLV4<<1,
+	TRA_LAST=TRA_FLV4<<1,
+/*
 	TRA_LAST=TRA_VP62<<1
+*/
 };
 
 enum
@@ -475,8 +477,6 @@ public:
 
 		CString SnapShotPath, SnapShotExt;
 		int ThumbRows, ThumbCols, ThumbWidth;
-
-		CString ISDb;
 
 		struct Shader {CString label, target, srcdata;};
 		CAtlList<Shader> m_shaders;

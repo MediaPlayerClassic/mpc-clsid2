@@ -44,7 +44,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TreePropSheet", "..\..\ui\T
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseClasses", "C:\Program Files\Microsoft DirectX 9.0 SDK (October 2004)\Samples\C++\DirectShow\BaseClasses\baseclasses.vcproj", "{6A53675D-145E-4689-B935-0D73FB71A3DD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseClasses", "C:\Development\Platform SDK 5\Samples\Multimedia\DirectShow\BaseClasses\baseclasses.vcproj", "{6A53675D-145E-4689-B935-0D73FB71A3DD}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

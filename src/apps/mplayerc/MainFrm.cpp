@@ -237,12 +237,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOAD_SUBTITLE, OnUpdateFileLoadsubtitle)
 	ON_COMMAND(ID_FILE_SAVE_SUBTITLE, OnFileSavesubtitle)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_SUBTITLE, OnUpdateFileSavesubtitle)
-	ON_COMMAND(ID_FILE_ISDB_SEARCH, OnFileISDBSearch)
-	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_SEARCH, OnUpdateFileISDBSearch)
-	ON_COMMAND(ID_FILE_ISDB_UPLOAD, OnFileISDBUpload)
-	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_UPLOAD, OnUpdateFileISDBUpload)
-	ON_COMMAND(ID_FILE_ISDB_DOWNLOAD, OnFileISDBDownload)
-	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_DOWNLOAD, OnUpdateFileISDBDownload)
 	ON_COMMAND(ID_FILE_PROPERTIES, OnFileProperties)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PROPERTIES, OnUpdateFileProperties)
 	ON_COMMAND(ID_FILE_CLOSEPLAYLIST, OnFileClosePlaylist)
@@ -357,7 +351,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	ON_COMMAND(ID_HELP_HOMEPAGE, OnHelpHomepage)
 	ON_COMMAND(ID_HELP_DOCUMENTATION, OnHelpDocumentation)
-	ON_COMMAND(ID_HELP_DONATE, OnHelpDonate)
 
 	END_MESSAGE_MAP()
 
@@ -1102,9 +1095,10 @@ void CMainFrame::OnDisplayChange() // untested, not sure if it's working...
 
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if((nID & 0xFFF0) == SC_SCREENSAVE)
+	if( (GetMediaState() == State_Running) && (((nID & 0xFFF0) == SC_SCREENSAVE) || ((nID & 0xFFF0) == SC_MONITORPOWER)) )
 	{
 		TRACE(_T("SC_SCREENSAVE, nID = %d, lParam = %d\n"), nID, lParam);
+		return;
 	}
 	else if((nID & 0xFFF0) == SC_MINIMIZE && m_fTrayIcon)
 	{
@@ -3429,7 +3423,20 @@ bool CMainFrame::GetDIB(BYTE** ppData, long& size, bool fSilent)
 		if(m_pCAP)
 		{
 			hr = m_pCAP->GetDIB(NULL, (DWORD*)&size);
-			if(FAILED(hr)) {errmsg.Format(_T("GetDIB failed, hr = %08x"), hr); break;}
+			if(FAILED(hr))
+			{
+				OnPlayPause();GetMediaState(); // Pause and retry to support ffdshow queueing.
+				int retry = 0;
+				while(FAILED(hr) && retry < 20)
+				{
+					hr = m_pCAP->GetDIB(*ppData, (DWORD*)&size);
+					if(SUCCEEDED(hr)) break;
+					Sleep(1);
+					retry++;
+				}
+				if(FAILED(hr))
+				 {errmsg.Format(_T("GetDIB failed, hr = %08x"), hr); break;}
+			}
 
 			if(!(*ppData = new BYTE[size])) return false;
 
@@ -4009,159 +4016,6 @@ void CMainFrame::OnUpdateFileSavesubtitle(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_iSubtitleSel >= 0);
 }
 
-///////////////
-
-#include "SubtitleDlDlg.h"
-#include "ISDb.h"
-
-void CMainFrame::OnFileISDBSearch()
-{
-	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/index.php?";
-	CStringA args = makeargs(m_wndPlaylistBar.m_pl);
-	ShellExecute(m_hWnd, _T("open"), CString(url+args), NULL, NULL, SW_SHOWDEFAULT);
-}
-
-void CMainFrame::OnUpdateFileISDBSearch(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(TRUE);
-}
-
-void CMainFrame::OnFileISDBUpload()
-{
-	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/ul.php?";
-	CStringA args = makeargs(m_wndPlaylistBar.m_pl);
-	ShellExecute(m_hWnd, _T("open"), CString(url+args), NULL, NULL, SW_SHOWDEFAULT);
-}
-
-void CMainFrame::OnUpdateFileISDBUpload(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(m_wndPlaylistBar.GetCount() > 0);
-}
-
-void CMainFrame::OnFileISDBDownload()
-{
-	filehash fh;
-	if(!hash(m_wndPlaylistBar.GetCur(), fh))
-	{
-		MessageBeep(-1);
-		return;
-	}
-
-	// TODO: put this on a worker thread
-
-	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/index.php?";
-	CStringA args;
-	args.Format("player=mpc&name[0]=%s&size[0]=%016I64x&hash[0]=%016I64x", 
-		UrlEncode(CStringA(fh.name)), fh.size, fh.hash);
-
-	try
-	{
-		CInternetSession is;
-
-		CStringA str;
-		if(!OpenUrl(is, CString(url+args), str))
-		{
-			MessageBeep(-1);
-			return;
-		}
-
-		CStringA ticket;
-		CList<isdb_movie> movies;
-		isdb_movie m;
-		isdb_subtitle s;
-
-		CAtlList<CStringA> sl;
-		Explode(str, sl, '\n');
-
-		POSITION pos = sl.GetHeadPosition();
-		while(pos)
-		{
-			str = sl.GetNext(pos);
-
-			CStringA param = str.Left(max(0, str.Find('=')));
-			CStringA value = str.Mid(str.Find('=')+1);
-
-			if(param == "ticket") ticket = value;
-			else if(param == "movie") {m.reset(); Explode(value, m.titles, '|');}
-			else if(param == "subtitle") {s.reset(); s.id = atoi(value);}
-			else if(param == "name") s.name = value;
-			else if(param == "discs") s.discs = atoi(value);
-			else if(param == "disc_no") s.disc_no = atoi(value);
-			else if(param == "format") s.format = value;
-			else if(param == "iso639_2") s.iso639_2 = value;
-			else if(param == "language") s.language = value;
-			else if(param == "nick") s.nick = value;
-			else if(param == "email") s.email = value;
-			else if(param == "" && value == "endsubtitle") {m.subs.AddTail(s);}
-			else if(param == "" && value == "endmovie") {movies.AddTail(m);}
-			else if(param == "" && value == "end") break;
-		}
-
-		CSubtitleDlDlg dlg(movies, this);
-		if(IDOK == dlg.DoModal())
-		{
-			if(dlg.m_fReplaceSubs)
-				m_pSubStreams.RemoveAll();
-
-			CComPtr<ISubStream> pSubStreamToSet;
-
-			POSITION pos = dlg.m_selsubs.GetHeadPosition();
-			while(pos)
-			{
-				isdb_subtitle& s = dlg.m_selsubs.GetNext(pos);
-
-				CStringA url = "http://" + AfxGetAppSettings().ISDb + "/dl.php?";
-				CStringA args;
-				args.Format("id=%d&ticket=%s", s.id, UrlEncode(ticket));
-
-				if(OpenUrl(is, CString(url+args), str))
-				{
-					CComPtr<ISubStream> pSubStream;
-
-					if(!pSubStream)
-					{
-						CAutoPtr<ssf::CRenderer> p(new ssf::CRenderer(&m_csSubLock));
-
-						if(p->Open(ssf::MemoryInputStream((BYTE*)(LPCSTR)str, str.GetLength(), false, false), CString(s.name)) && p->GetStreamCount() > 0)
-						{
-							pSubStream = p.Detach();
-						}
-					}
-
-					if(!pSubStream)
-					{
-						CAutoPtr<CRenderedTextSubtitle> p(new CRenderedTextSubtitle(&m_csSubLock));
-
-						if(p->Open((BYTE*)(LPCSTR)str, str.GetLength(), DEFAULT_CHARSET, CString(s.name)) && p->GetStreamCount() > 0)
-						{
-							pSubStream = p.Detach();
-						}
-					}
-
-					if(pSubStream)
-					{
-						m_pSubStreams.AddTail(pSubStream);
-						if(!pSubStreamToSet) pSubStreamToSet = pSubStream;
-					}
-				}
-			}
-
-			if(pSubStreamToSet)
-				SetSubtitle(pSubStreamToSet);
-		}
-	}
-	catch(CInternetException* ie)
-	{
-		ie->Delete();
-		return;
-	}
-}
-
-void CMainFrame::OnUpdateFileISDBDownload(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(m_iMediaLoadState == MLS_LOADED && m_pCAP && !m_fAudioOnly);
-}
-
 void CMainFrame::OnFileProperties()
 {
 	CPPageFileInfoSheet m_fileinfo(m_wndPlaylistBar.GetCur(), this);
@@ -4579,8 +4433,6 @@ void CMainFrame::OnViewOptions()
 
 // play
 
-#include "IPinHook.h"
-
 void CMainFrame::OnPlayPlay()
 {
 	if(m_iMediaLoadState == MLS_LOADED)
@@ -4624,7 +4476,7 @@ void CMainFrame::OnPlayPlay()
 	MoveVideoWindow();
 }
 
-void CMainFrame::OnPlayPause()
+void CMainFrame::OnPlayPauseI()
 {
 	if(m_iMediaLoadState == MLS_LOADED)
 	{
@@ -4649,6 +4501,18 @@ void CMainFrame::OnPlayPause()
 	}
 
 	MoveVideoWindow();
+}
+
+void CMainFrame::OnPlayPause()
+{
+	// Support ffdshow queueing.
+	// To avoid black out on pause, we have to lock g_ffdshowReceive to synchronize with ReceiveMine.
+	if(queueu_ffdshow_support)
+	{
+		CAutoLock lck(&g_ffdshowReceive);
+		return OnPlayPauseI();
+	}
+	OnPlayPauseI();
 }
 
 void CMainFrame::OnPlayPlaypause()
@@ -4775,7 +4639,7 @@ void CMainFrame::OnPlayFramestep(UINT nID)
 
 	if(pFS && m_fQuicktimeGraph)
 	{
-		if(GetMediaState() != State_Paused)
+		if(GetMediaState() != State_Paused && !queueu_ffdshow_support)
 			SendMessage(WM_COMMAND, ID_PLAY_PAUSE);
 
 		pFS->Step(nID == ID_PLAY_FRAMESTEP ? 1 : -1, NULL);
@@ -6058,19 +5922,12 @@ void CMainFrame::OnUpdateFavoritesDevice(CCmdUI* pCmdUI)
 
 void CMainFrame::OnHelpHomepage()
 {
-	ShellExecute(m_hWnd, _T("open"), _T("http://gabest.org/"), NULL, NULL, SW_SHOWDEFAULT);
+	ShellExecute(m_hWnd, _T("open"), _T("http://sourceforge.net/projects/guliverkli2/"), NULL, NULL, SW_SHOWDEFAULT);
 }
 
 void CMainFrame::OnHelpDocumentation()
 {
 	ShellExecute(m_hWnd, _T("open"), _T("http://sourceforge.net/project/showfiles.php?group_id=82303&package_id=144472"), NULL, NULL, SW_SHOWDEFAULT);
-}
-
-void CMainFrame::OnHelpDonate()
-{
-	const TCHAR URL[] = _T("http://order.kagi.com/?N4A");
-	if(CString(URL).Find(CString(_T("A4N")).MakeReverse()) >= 0)
-		ShellExecute(m_hWnd, _T("open"), URL, NULL, NULL, SW_SHOWDEFAULT);
 }
 
 //////////////////////////////////
@@ -7315,8 +7172,11 @@ void CMainFrame::OpenCustomizeGraph()
 
 	if(m_iPlaybackMode == PM_FILE)
 	{
-		if(m_pCAP)
-			AddTextPassThruFilter();
+		if(m_pCAP) {
+			if(AfxGetAppSettings().fAutoloadSubtitles) {
+				AddTextPassThruFilter();
+			}
+		}
 	}
 
 	if(m_iPlaybackMode == PM_DVD)
