@@ -71,7 +71,7 @@ BEGIN
         BEGIN
             VALUE "Comments", ""
             VALUE "CompanyName", "Gabest"
-            VALUE "FileDescription", "MPEG-1/2 Decoder Filter for DirectShow"
+            VALUE "FileDescription", "MPEG-2 Decoder Filter for DirectShow"
             VALUE "FileVersion", "1, 0, 0, 4"
             VALUE "InternalName", " Mpeg2Dec Filter"
             VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
