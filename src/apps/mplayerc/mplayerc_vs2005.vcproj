@@ -70,7 +70,7 @@
 				AdditionalLibraryDirectories="../../../lib;../../../lib/wm7;../../../lib/qt6;../../../lib/detours"
 				GenerateManifest="false"
 				IgnoreDefaultLibraryNames="MSVCRT"
-				DelayLoadDLLs="d3d9.dll;msimg32.dll;gdiplus.dll;psapi.dll"
+				DelayLoadDLLs="d3d9.dll;gdiplus.dll;psapi.dll"
 				SubSystem="2"
 				SupportUnloadOfDelayLoadedDLL="true"
 			/>
@@ -240,7 +240,7 @@
 				AdditionalLibraryDirectories="../../../lib;../../../lib/wm7;../../../lib/qt6;../../../lib/detours"
 				GenerateManifest="false"
 				IgnoreDefaultLibraryNames="MSVCRT"
-				DelayLoadDLLs="d3d9.dll;msimg32.dll;gdiplus.dll;psapi.dll"
+				DelayLoadDLLs="d3d9.dll;gdiplus.dll;psapi.dll"
 				SubSystem="2"
 				SupportUnloadOfDelayLoadedDLL="true"
 			/>
