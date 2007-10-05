@@ -42,8 +42,10 @@ HRESULT CMpegSplitterFile::Init()
 	HRESULT hr;
 
 	// get the type first
-
 	m_type = us;
+	
+	m_rtMin = m_posMin = _I64_MAX;
+	m_rtMax = m_posMax = 0;
 
 	Seek(0);
 
@@ -105,10 +107,7 @@ HRESULT CMpegSplitterFile::Init()
 	//
 
 	// min/max pts & bitrate
-
-	m_rtMin = m_posMin = _I64_MAX;
-	m_rtMax = m_posMax = 0;
-
+	
 	if(IsRandomAccess() || IsStreaming())
 	{
 		if(IsStreaming())
@@ -172,7 +171,10 @@ void CMpegSplitterFile::OnComplete()
 	if(SUCCEEDED(SearchStreams(GetLength() - 500*1024, GetLength())))
 	{
 		int indicated_rate = m_rate;
-		int detected_rate = 10000000i64 * (m_posMax - m_posMin) / (m_rtMax - m_rtMin);
+		int detected_rate;
+
+		if (m_rtMax - m_rtMin != 0)
+			detected_rate = 10000000i64 * (m_posMax - m_posMin) / (m_rtMax - m_rtMin);
 		// normally "detected" should always be less than "indicated", but sometimes it can be a few percent higher (+10% is allowed here)
 		// (update: also allowing +/-50k/s)
 		if(indicated_rate == 0 || ((float)detected_rate / indicated_rate) < 1.1
