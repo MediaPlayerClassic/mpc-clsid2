@@ -198,7 +198,7 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("CD Audio Track"), _T("cda"), true, _T("Windows 2000/XP or better")));
 		ADDFMT((_T("FLIC file"), _T("fli flc flic")));
 		ADDFMT((_T("DVD2AVI Project file"), _T("d2v")));
-		ADDFMT((_T("MPEG4 file "), _T("mp4 m4v m4p m4b hdmov 3gp 3gpp")));
+		ADDFMT((_T("MPEG4 file "), _T("mp4 m4v m4b hdmov 3gp 3gpp")));
 		ADDFMT((_T("MPEG4 Audio file "), _T("m4a aac"), true));
 		ADDFMT((_T("Matroska Media file"), _T("mkv")));
 		ADDFMT((_T("Matroska Audio file"), _T("mka"), true));
