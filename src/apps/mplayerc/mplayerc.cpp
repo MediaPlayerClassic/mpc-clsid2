@@ -1307,26 +1307,6 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 	{
 		if(fInitialized) return;
 
-		/*
-		if(pApp->m_pszRegistryKey)
-		{
-			CRegKey appkey, settingskey;
-			appkey.Attach(pApp->GetAppRegistryKey());
-			settingskey.Attach(pApp->GetSectionKey(ResStr(IDS_R_INTERNAL_FILTERS)));
-			if(appkey && settingskey)
-			{
-				ULONGLONG ftapp = 0, ftsettings = 0;
-				RegQueryInfoKey(appkey, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, (FILETIME*)&ftapp);
-				RegQueryInfoKey(settingskey, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, (FILETIME*)&ftsettings);
-				if(ftapp < ftsettings)
-				{
-					pApp->WriteProfileInt(ResStr(IDS_R_INTERNAL_FILTERS), ResStr(IDS_RS_SRCFILTERS), ~0^SRC_AVI^SRC_MATROSKA^SRC_MP4^SRC_MPEG^SRC_OGG);
-					pApp->WriteProfileInt(ResStr(IDS_R_INTERNAL_FILTERS), ResStr(IDS_RS_TRAFILTERS), ~0^TRA_MPEG1^TRA_AAC^TRA_AC3^TRA_DTS^TRA_LPCM^TRA_MPA^TRA_MPEG2^TRA_VORBIS^TRA_FLV4);
-				}
-			}
-		}
-		*/
-
 		OSVERSIONINFO vi;
 		vi.dwOSVersionInfoSize = sizeof(vi);
 		GetVersionEx(&vi);
@@ -1595,7 +1575,7 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 
 		Formats.UpdateData(false);
 
-		SrcFilters = pApp->GetProfileInt(ResStr(IDS_R_INTERNAL_FILTERS), ResStr(IDS_RS_SRCFILTERS), ~0^SRC_AVI^SRC_MATROSKA^SRC_MP4^SRC_MPEG^SRC_OGG);
+		SrcFilters = pApp->GetProfileInt(ResStr(IDS_R_INTERNAL_FILTERS), ResStr(IDS_RS_SRCFILTERS), ~0^SRC_MATROSKA^SRC_MP4^SRC_MPEG^SRC_OGG);
 		TraFilters = pApp->GetProfileInt(ResStr(IDS_R_INTERNAL_FILTERS), ResStr(IDS_RS_TRAFILTERS), ~0^TRA_MPEG1^TRA_AAC^TRA_AC3^TRA_DTS^TRA_LPCM^TRA_MPEG2^TRA_VORBIS^TRA_FLV4);
 
 		logofn = pApp->GetProfileString(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_LOGOFILE), _T(""));

@@ -2174,18 +2174,18 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SRC_RADGT           "6.4.0.0\nRequires smackw32.dll and binkw32.dll"
-    IDS_SRC_CDDA            "6.4.0.1\n2K/XP only"
-    IDS_SRC_AVI             "6.4.0.7\nNon-interleaved files are not welcome"
-    IDS_SRC_CDXA            "6.4.0.1"
+    IDS_SRC_CDDA            "6.4.0.2\n2K/XP only"
+    IDS_SRC_AVI             "6.4.0.9\nNon-interleaved files are not welcome"
+    IDS_SRC_CDXA            "6.4.0.2"
     IDS_SRC_VTS             "6.4.0.0\nOpen VTS_xx_0.ifo to load VTS_xx_x.vob files in one piece"
-    IDS_SRC_FLIC            "6.4.0.0"
+    IDS_SRC_FLIC            "6.4.0.1"
     IDS_SRC_D2V             "6.4.0.0"
     IDS_SRC_DTSAC3          "6.4.0.2"
     IDS_SRC_SHOUTCAST       "6.4.0.1"
-    IDS_SRC_REALMEDIA       "6.4.1.1\nRealMedia format categories must be set to 'DirectShow' to make it load\nDoesn't support streaming!"
+    IDS_SRC_REALMEDIA       "6.4.1.2\nRealMedia format categories must be set to 'DirectShow' to make it load\nDoesn't support streaming!"
     IDS_SRC_MATROSKA        "6.4.3.0"
     IDS_SRC_ROQ             "6.4.0.0"
-    IDS_SRC_OGG             "6.4.0.3"
+    IDS_SRC_OGG             "6.4.0.1"
     IDS_SRC_NUT             "6.4.0.0\nBased on ""NUT Open Container Format DRAFT 20030906""\nStill very incomplete, if you have or can make test files, please contact me."
     IDS_SRC_DIRAC           "6.4.0.1\nBased on libdirac 0.5.0"
     IDS_SRC_DSM             "6.4.0.5"
@@ -2194,11 +2194,11 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SRC_MPA             "6.4.0.2\nSource filter for mp3 and aac"
-    IDS_SRC_MP4             "6.4.0.3"
+    IDS_SRC_MP4             "6.4.0.4"
     IDS_TRA_RV              "6.4.1.0\nRequires RealVideo decoder dlls, RV10 also works with ffdshow"
     IDS_TRA_RA              "6.4.1.0\nRequires RealAudio decoder dlls, DNET also works with ac3filter"
-    IDS_TRA_MPEG1           "6.4.0.3\nBased on libmpeg2 (mpeg1 video decoding is bogus)"
-    IDS_TRA_MPEG2           "6.4.0.3\nBased on libmpeg2"
+    IDS_TRA_MPEG1           "6.4.0.4\nBased on libmpeg2 (mpeg1 video decoding is bogus)"
+    IDS_TRA_MPEG2           "6.4.0.4\nBased on libmpeg2"
     IDS_TRA_MPA             "6.4.0.4\nBased on libmad, liba52, libdts, libfaad"
     IDS_TRA_LPCM            "6.4.0.1"
     IDS_TRA_AC3             "6.4.0.1\nBased on liba52 0.7.4, http://liba52.sourceforge.net/"
@@ -2206,7 +2206,7 @@ BEGIN
     IDS_TRA_AAC             "6.4.0.2\nBased on libfaad 2.6, http://www.audiocoding.com/"
     IDS_TRA_DIRAC           "6.4.0.1\nBased on libdirac 0.5.0"
     IDS_TRA_PS2AUD          "6.4.0.1\nDecodes audio streams of PSS files"
-    IDS_SRC_FLV             "6.4.0.2"
+    IDS_SRC_FLV             "6.4.0.3"
 END
 
 STRINGTABLE 
