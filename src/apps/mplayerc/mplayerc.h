@@ -311,6 +311,8 @@ public:
 	bool IsIniValid();
 
 	bool GetAppDataPath(CString& path);
+	
+	static bool	IsVista();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

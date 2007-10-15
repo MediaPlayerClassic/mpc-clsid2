@@ -1339,7 +1339,11 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 		fLoopForever = !!pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_LOOP), 0);
 		fRewind = !!pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_REWIND), false);
 		iZoomLevel = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_ZOOM), 1);
-		iDSVideoRendererType = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_DSVIDEORENDERERTYPE), VIDRNDT_DS_OVERLAYMIXER);
+		if(IsVista) {
+			iDSVideoRendererType = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_DSVIDEORENDERERTYPE), VIDRNDT_DS_VMR9RENDERLESS);
+		} else {
+			iDSVideoRendererType = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_DSVIDEORENDERERTYPE), VIDRNDT_DS_OVERLAYMIXER);
+		}
 		iRMVideoRendererType = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_RMVIDEORENDERERTYPE), VIDRNDT_RM_DEFAULT);
 		iQTVideoRendererType = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_QTVIDEORENDERERTYPE), VIDRNDT_QT_DEFAULT);
 		iAPSurfaceUsage = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_APSURACEFUSAGE), VIDRNDT_AP_TEXTURE2D);
@@ -2215,4 +2219,18 @@ CString GetContentType(CString fn, CAtlList<CString>* redir)
 	}
 
 	return ct;
+}
+
+bool CMPlayerCApp::IsVista()
+{
+	OSVERSIONINFO osver;
+
+	osver.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
+	
+	if (	::GetVersionEx( &osver ) && 
+			osver.dwPlatformId == VER_PLATFORM_WIN32_NT && 
+			(osver.dwMajorVersion >= 6 ) )
+		return TRUE;
+
+	return FALSE;
 }
