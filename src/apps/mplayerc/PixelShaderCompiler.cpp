@@ -28,11 +28,23 @@ CPixelShaderCompiler::CPixelShaderCompiler(IDirect3DDevice9* pD3DDev, bool fStay
 	, m_pD3DXCompileShader(NULL)
 	, m_pD3DXDisassembleShader(NULL)
 {
-	CString d3dx9_dll;
-	d3dx9_dll.Format(_T("d3dx9_%d.dll"), D3DX_SDK_VERSION);
-
-	m_hDll = LoadLibrary(d3dx9_dll);
-
+	CString d3dx9_dll;	
+	
+	// Load first available dll
+	// Older versions are preffered because those still have PS1.X support 
+	for (int i=24; i<=D3DX_SDK_VERSION; i++)
+	{
+		if (i!=33)	// Don't use DXSDK April 2007 (crashes sometimes during shader compilation)
+		{
+			d3dx9_dll.Format(_T("d3dx9_%d.dll"), i);
+			m_hDll = LoadLibrary(d3dx9_dll);
+			
+			if(m_hDll) {
+				break;
+			}
+		}
+	}
+	
 	if(m_hDll)
 	{
 		m_pD3DXCompileShader = (D3DXCompileShaderPtr)GetProcAddress(m_hDll, "D3DXCompileShader");
