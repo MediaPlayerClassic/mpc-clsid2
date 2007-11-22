@@ -303,7 +303,7 @@ HRESULT CFGManager::EnumSourceFilters(LPCWSTR lpcwstrFileName, CFGFilterList& fl
 								{
 									CFGFilter* pFGF = new CFGFilterRegistry(clsid);
 									pFGF->AddType(majortype, subtype);
-									fl.Insert(pFGF, 7);
+									fl.Insert(pFGF, 8);
 									break;
 								}
 							}
@@ -340,7 +340,7 @@ HRESULT CFGManager::EnumSourceFilters(LPCWSTR lpcwstrFileName, CFGFilterList& fl
 
 				CFGFilter* pFGF = new CFGFilterRegistry(clsid);
 				pFGF->AddType(majortype, subtype);
-				fl.Insert(pFGF, 8);
+				fl.Insert(pFGF, 7);
 			}
 		}
 	}
