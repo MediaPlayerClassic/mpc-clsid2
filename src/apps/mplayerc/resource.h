@@ -79,6 +79,8 @@
 #define IDF_SHADER_PROCAMP              712
 #define IDF_SHADER_LEVELS               713
 #define IDF_SHADER_NIGHTVISION          714
+#define IDF_SHADER_EDGE_SHARPEN         715
+#define IDF_SHADER_SHARPEN_COMPLEX      716
 #define ID_FILE_OPENMEDIA               800
 #define ID_FILE_OPENDVD                 801
 #define ID_FILE_OPENDEVICE              802

@@ -1631,6 +1631,7 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 		shaders[_T("16-235 -> 0-255")] = IDF_SHADER_LEVELS;
 		shaders[_T("contour")] = IDF_SHADER_CONTOUR;
 		shaders[_T("deinterlace (blend)")] = IDF_SHADER_DEINTERLACE;
+		shaders[_T("edge sharpen")] = IDF_SHADER_EDGE_SHARPEN;
 		shaders[_T("emboss")] = IDF_SHADER_EMBOSS;
 		shaders[_T("grayscale")] = IDF_SHADER_GRAYSCALE;
 		shaders[_T("invert")] = IDF_SHADER_INVERT;
@@ -1638,6 +1639,7 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 		shaders[_T("nightvision")] = IDF_SHADER_NIGHTVISION;
 		shaders[_T("procamp")] = IDF_SHADER_PROCAMP;
 		shaders[_T("sharpen")] = IDF_SHADER_SHARPEN;
+		shaders[_T("sharpen complex")] = IDF_SHADER_SHARPEN_COMPLEX;
 		shaders[_T("sphere")] = IDF_SHADER_SPHERE;
 		shaders[_T("spotlight")] = IDF_SHADER_SPOTLIGHT;
 		shaders[_T("wave")] = IDF_SHADER_WAVE;
