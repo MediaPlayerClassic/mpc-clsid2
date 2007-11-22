@@ -483,6 +483,8 @@ public:
 		struct Shader {CString label, target, srcdata;};
 		CAtlList<Shader> m_shaders;
 		CString m_shadercombine;
+		
+		CString	strShaderList;
 
 	public:
 		Settings();

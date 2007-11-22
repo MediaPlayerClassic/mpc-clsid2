@@ -479,6 +479,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if(s.fEnableWebServer)
 		StartWebServer(s.nWebServerPort);
+		
+	// load shaders
+	CString	strList = AfxGetAppSettings().strShaderList;
+	CString	strRes;
+	int	curPos= 0;
+		
+	strRes = strList.Tokenize (_T("|"), curPos);
+	while (strRes != _T(""))
+	{
+		m_shaderlabels.AddTail (strRes);
+		strRes = strList.Tokenize(_T("|"),curPos);
+	};
+	// end
+	
 
 	return 0;
 }
@@ -505,6 +519,19 @@ void CMainFrame::OnDestroy()
 
 void CMainFrame::OnClose()
 {
+	// save shader list
+	POSITION pos;
+	CString	strList = "";
+		
+	pos = m_shaderlabels.GetHeadPosition();
+	while(pos)
+	{
+		strList += m_shaderlabels.GetAt (pos) + "|";
+		m_dockingbars.GetNext(pos);
+	}
+	AfxGetAppSettings().strShaderList = strList;
+	// end
+	
 	m_wndPlaylistBar.SavePlaylist();
 
 	SaveControlBars();
