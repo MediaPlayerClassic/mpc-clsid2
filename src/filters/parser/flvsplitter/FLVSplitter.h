@@ -31,14 +31,6 @@ class CFLVSplitterFilter : public CBaseSplitterFilter
 
 	bool Sync(__int64& pos);
 
-	struct VideoTweak
-	{
-		BYTE x;
-		BYTE y;
-	};
-
-	bool ReadTag(VideoTweak& t);
-	
 	struct Tag
 	{
 		UINT32 PreviousTagSize;
