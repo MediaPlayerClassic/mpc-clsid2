@@ -5,7 +5,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mplayerc", "mplayerc.vcproj
 		{03208025-D5C2-426A-B0FA-251D4338F30C} = {03208025-D5C2-426A-B0FA-251D4338F30C}
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10} = {AB494732-EF6D-44D0-BCF8-80FF04858D10}
 		{61E6EB4D-2F1A-443B-94B0-E8200B26E99F} = {61E6EB4D-2F1A-443B-94B0-E8200B26E99F}
-		{6A53675D-145E-4689-B935-0D73FB71A3DD} = {6A53675D-145E-4689-B935-0D73FB71A3DD}
 		{5E56335F-0FB1-4EEA-B240-D8DC5E0608E4} = {5E56335F-0FB1-4EEA-B240-D8DC5E0608E4}
 		{4CC7AE86-3E0A-430A-BFF4-BF00204CAFB0} = {4CC7AE86-3E0A-430A-BFF4-BF00204CAFB0}
 		{FC70988B-1AE5-4381-866D-4F405E28AC42} = {FC70988B-1AE5-4381-866D-4F405E28AC42}
@@ -44,10 +43,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TreePropSheet", "..\..\ui\T
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseClasses", "C:\Development\Platform SDK 5\Samples\Multimedia\DirectShow\BaseClasses\baseclasses.vcproj", "{6A53675D-145E-4689-B935-0D73FB71A3DD}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -55,6 +50,8 @@ Global
 		Release = Release
 		Release Unicode = Release Unicode
 		ResourceDLL = ResourceDLL
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{8CE7E5D0-C821-47AC-A247-28EC95B34670}.Debug.ActiveCfg = Debug|Win32
@@ -144,16 +141,6 @@ Global
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.Release Unicode.Build.0 = Release Unicode|Win32
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.ResourceDLL.ActiveCfg = Release Unicode|Win32
 		{AB494732-EF6D-44D0-BCF8-80FF04858D10}.ResourceDLL.Build.0 = Release Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Debug.ActiveCfg = Debug|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Debug.Build.0 = Debug|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Debug Unicode.ActiveCfg = Debug Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Debug Unicode.Build.0 = Debug Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Release.ActiveCfg = Release|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Release.Build.0 = Release|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Release Unicode.ActiveCfg = Release Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.Release Unicode.Build.0 = Release Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.ResourceDLL.ActiveCfg = Release Unicode|Win32
-		{6A53675D-145E-4689-B935-0D73FB71A3DD}.ResourceDLL.Build.0 = Release Unicode|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
