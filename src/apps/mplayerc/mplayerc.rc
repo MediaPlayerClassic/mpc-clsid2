@@ -262,7 +262,7 @@ BEGIN
     CONTROL         "User defined path:",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,15,35,76,10
     EDITTEXT        IDC_DVDPATH,29,50,180,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_BUTTON1,215,50,15,14
-    GROUPBOX        "Prefered language for DVD Navigator and the external OGM Splitter",IDC_STATIC,5,77,235,73
+    GROUPBOX        "Preferred language for DVD Navigator and the external OGM Splitter",IDC_STATIC,5,77,235,73
     CONTROL         "Menu",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,95,33,10
     CONTROL         "Audio",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,15,111,34,10
     CONTROL         "Subtitles",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,15,127,43,10
