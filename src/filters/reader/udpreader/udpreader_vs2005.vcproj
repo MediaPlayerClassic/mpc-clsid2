@@ -282,7 +282,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="UDPReader.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -353,7 +352,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="UDPReader.def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -425,10 +423,7 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="UDPReader.def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -495,14 +490,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				RegisterOutput="true"
-				AdditionalDependencies="asyncreaderRU.lib strmbaseRU.lib"
+				AdditionalDependencies="asyncreaderRU.lib strmbaseRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="UDPReader.def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool

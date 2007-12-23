@@ -959,6 +959,8 @@ void CPlayerCaptureDialog::SetupVideoControls(
 				}
 			}
 		}
+		
+		OnVideoInput();
 	}
 
 	// tuner

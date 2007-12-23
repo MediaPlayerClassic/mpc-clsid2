@@ -262,7 +262,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="strmbaseRU.lib"
+				AdditionalDependencies="strmbaseRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="../../../../lib"
 				ModuleDefinitionFile="AVI2AC3Filter.def"

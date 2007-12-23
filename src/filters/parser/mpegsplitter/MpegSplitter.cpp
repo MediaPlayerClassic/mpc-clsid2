@@ -283,11 +283,7 @@ bool CMpegSplitterFilter::DemuxInit()
 
 void CMpegSplitterFilter::DemuxSeek(REFERENCE_TIME rt)
 {
-	CAtlList<CMpegSplitterFile::stream>* pMasterStream = 
-		!m_pFile->m_streams[CMpegSplitterFile::video].IsEmpty() ? &m_pFile->m_streams[CMpegSplitterFile::video] :
-		!m_pFile->m_streams[CMpegSplitterFile::audio].IsEmpty() ? &m_pFile->m_streams[CMpegSplitterFile::audio] :
-		!m_pFile->m_streams[CMpegSplitterFile::subpic].IsEmpty() ? &m_pFile->m_streams[CMpegSplitterFile::subpic] :
-		NULL;
+	CAtlList<CMpegSplitterFile::stream>* pMasterStream = m_pFile->GetMasterStream();
 
 	if(!pMasterStream) {ASSERT(0); return;}
 

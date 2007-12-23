@@ -226,13 +226,13 @@ HRESULT CFLVSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 
 		if(t.TagType == 8 && fTypeFlagsAudio)
 		{
-			fTypeFlagsAudio = false;
-
 			name = L"Audio";
 
 			AudioTag at;
 			if(ReadTag(at))
 			{
+				fTypeFlagsAudio = false;
+
 				mt.majortype = MEDIATYPE_Audio;
 				mt.formattype = FORMAT_WaveFormatEx;
 				WAVEFORMATEX* wfe = (WAVEFORMATEX*)mt.AllocFormatBuffer(sizeof(WAVEFORMATEX));

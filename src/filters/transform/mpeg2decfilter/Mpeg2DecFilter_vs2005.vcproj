@@ -253,6 +253,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="REGISTER_FILTER;WIN32;NDEBUG;_USRDLL;MPEG2ONLY"
 			/>
 			<Tool

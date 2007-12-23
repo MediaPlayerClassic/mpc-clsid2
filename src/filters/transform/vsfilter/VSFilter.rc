@@ -224,7 +224,7 @@ FONT 8, "MS Sans Serif", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Subtitle Timing",IDC_STATIC,7,7,233,96
     LTEXT           "Delay (enter a positive number if the subtitles are late, or a negative if they come early)",IDC_STATIC,14,20,219,16
-    EDITTEXT        IDC_EDIT5,20,41,48,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT5,20,41,48,12,ES_RIGHT | ES_AUTOHSCROLL
     CONTROL         "",IDC_SPIN5,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,60,45,11,14
     LTEXT           "(millisecs)",IDC_STATIC,73,43,31,8
     LTEXT           "Speed Ratio (this may be useful for using a subtitle originally synchronized to a video with a different fps)",IDC_STATIC,14,61,219,18

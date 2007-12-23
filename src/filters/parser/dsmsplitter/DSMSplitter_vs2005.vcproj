@@ -277,7 +277,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -347,10 +346,7 @@
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool
@@ -422,7 +418,6 @@
 				IgnoreDefaultLibraryNames="libc.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				DelayLoadDLLs=""
-				
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -488,14 +483,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="strmbaseRU.lib dsutilRU.lib basesplitterRU.lib"
+				AdditionalDependencies="strmbaseRU.lib dsutilRU.lib basesplitterRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).ax"
 				AdditionalLibraryDirectories="..\..\..\..\lib"
 				ModuleDefinitionFile="$(ProjectName).def"
-				
 				SubSystem="2"
-				
-				
 				TargetMachine="1"
 			/>
 			<Tool

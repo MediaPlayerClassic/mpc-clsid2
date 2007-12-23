@@ -59,7 +59,7 @@
 #include <uuids.h>
 #include "..\..\..\include\moreuuids.h"
 #include <Qnetwork.h>
-#include <qedit.h>
+//#include <qedit.h>
 
 #include "..\..\DSUtil\DSUtil.h"
 #include "FGManager.h"
@@ -237,6 +237,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOAD_SUBTITLE, OnUpdateFileLoadsubtitle)
 	ON_COMMAND(ID_FILE_SAVE_SUBTITLE, OnFileSavesubtitle)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_SUBTITLE, OnUpdateFileSavesubtitle)
+	ON_COMMAND(ID_FILE_ISDB_SEARCH, OnFileISDBSearch)
+	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_SEARCH, OnUpdateFileISDBSearch)
+	ON_COMMAND(ID_FILE_ISDB_UPLOAD, OnFileISDBUpload)
+	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_UPLOAD, OnUpdateFileISDBUpload)
+	ON_COMMAND(ID_FILE_ISDB_DOWNLOAD, OnFileISDBDownload)
+	ON_UPDATE_COMMAND_UI(ID_FILE_ISDB_DOWNLOAD, OnUpdateFileISDBDownload)
 	ON_COMMAND(ID_FILE_PROPERTIES, OnFileProperties)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PROPERTIES, OnUpdateFileProperties)
 	ON_COMMAND(ID_FILE_CLOSEPLAYLIST, OnFileClosePlaylist)
@@ -4039,6 +4045,139 @@ void CMainFrame::OnFileSavesubtitle()
 void CMainFrame::OnUpdateFileSavesubtitle(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_iSubtitleSel >= 0);
+}
+
+///////////////
+
+#include "SubtitleDlDlg.h"
+#include "ISDb.h"
+
+void CMainFrame::OnFileISDBSearch()
+{
+	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/index.php?";
+	CStringA args = makeargs(m_wndPlaylistBar.m_pl);
+	ShellExecute(m_hWnd, _T("open"), CString(url+args), NULL, NULL, SW_SHOWDEFAULT);
+}
+
+void CMainFrame::OnUpdateFileISDBSearch(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
+void CMainFrame::OnFileISDBUpload()
+{
+	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/ul.php?";
+	CStringA args = makeargs(m_wndPlaylistBar.m_pl);
+	ShellExecute(m_hWnd, _T("open"), CString(url+args), NULL, NULL, SW_SHOWDEFAULT);
+}
+
+void CMainFrame::OnUpdateFileISDBUpload(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_wndPlaylistBar.GetCount() > 0);
+}
+
+void CMainFrame::OnFileISDBDownload()
+{
+	filehash fh;
+	if(!hash(m_wndPlaylistBar.GetCur(), fh))
+	{
+		MessageBeep(-1);
+		return;
+	}
+
+	// TODO: put this on a worker thread
+
+	CStringA url = "http://" + AfxGetAppSettings().ISDb + "/index.php?";
+	CStringA args;
+	args.Format("player=mpc&name[0]=%s&size[0]=%016I64x&hash[0]=%016I64x", 
+		UrlEncode(CStringA(fh.name)), fh.size, fh.hash);
+
+	try
+	{
+		CInternetSession is;
+
+		CStringA str;
+		if(!OpenUrl(is, CString(url+args), str))
+		{
+			MessageBeep(-1);
+			return;
+		}
+
+		CStringA ticket;
+		CList<isdb_movie> movies;
+		isdb_movie m;
+		isdb_subtitle s;
+
+		CAtlList<CStringA> sl;
+		Explode(str, sl, '\n');
+
+		POSITION pos = sl.GetHeadPosition();
+		while(pos)
+		{
+			str = sl.GetNext(pos);
+
+			CStringA param = str.Left(max(0, str.Find('=')));
+			CStringA value = str.Mid(str.Find('=')+1);
+
+			if(param == "ticket") ticket = value;
+			else if(param == "movie") {m.reset(); Explode(value, m.titles, '|');}
+			else if(param == "subtitle") {s.reset(); s.id = atoi(value);}
+			else if(param == "name") s.name = value;
+			else if(param == "discs") s.discs = atoi(value);
+			else if(param == "disc_no") s.disc_no = atoi(value);
+			else if(param == "format") s.format = value;
+			else if(param == "iso639_2") s.iso639_2 = value;
+			else if(param == "language") s.language = value;
+			else if(param == "nick") s.nick = value;
+			else if(param == "email") s.email = value;
+			else if(param == "" && value == "endsubtitle") {m.subs.AddTail(s);}
+			else if(param == "" && value == "endmovie") {movies.AddTail(m);}
+			else if(param == "" && value == "end") break;
+		}
+
+		CSubtitleDlDlg dlg(movies, this);
+		if(IDOK == dlg.DoModal())
+		{
+			if(dlg.m_fReplaceSubs)
+				m_pSubStreams.RemoveAll();
+
+			CComPtr<ISubStream> pSubStreamToSet;
+
+			POSITION pos = dlg.m_selsubs.GetHeadPosition();
+			while(pos)
+			{
+				isdb_subtitle& s = dlg.m_selsubs.GetNext(pos);
+
+				CStringA url = "http://" + AfxGetAppSettings().ISDb + "/dl.php?";
+				CStringA args;
+				args.Format("id=%d&ticket=%s", s.id, UrlEncode(ticket));
+
+				if(OpenUrl(is, CString(url+args), str))
+				{
+					CAutoPtr<CRenderedTextSubtitle> pRTS(new CRenderedTextSubtitle(&m_csSubLock));
+					if(pRTS && pRTS->Open((BYTE*)(LPCSTR)str, str.GetLength(), DEFAULT_CHARSET, CString(s.name)) && pRTS->GetStreamCount() > 0)
+					{
+						CComPtr<ISubStream> pSubStream = pRTS.Detach();
+						m_pSubStreams.AddTail(pSubStream);
+						if(!pSubStreamToSet) pSubStreamToSet = pSubStream;
+					}
+				}
+			}
+
+			if(pSubStreamToSet)
+				SetSubtitle(pSubStreamToSet);
+		}
+	}
+	catch(CInternetException* ie)
+	{
+		ie->Delete();
+		return;
+	}
+}
+
+void CMainFrame::OnUpdateFileISDBDownload(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_iMediaLoadState == MLS_LOADED && m_pCAP && !m_fAudioOnly);
 }
 
 void CMainFrame::OnFileProperties()

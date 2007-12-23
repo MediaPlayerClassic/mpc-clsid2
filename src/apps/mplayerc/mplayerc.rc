@@ -34,7 +34,7 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""afxres.h""\r\n"
+    "#include ""afxres.h""\r\0"
 END
 
 3 TEXTINCLUDE 
@@ -331,6 +331,16 @@ BEGIN
     GROUPBOX        "Warning",IDC_STATIC,5,99,284,35
     LTEXT           "RealMedia and QuickTime formats can be subtitled by setting their special DirectX 7 or DirectX 9 renderers.",IDC_STATIC,14,178,267,16
     CONTROL         "Round up to power of two",IDC_CHECK_SPCPOW2TEX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,184,79,97,10
+END
+
+IDD_PPAGESUBDB DIALOGEX 0, 0, 296, 203
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0xEE
+BEGIN
+    LTEXT           "Base URL of the online subtitle database:",IDC_STATIC,5,8,133,8
+    COMBOBOX        IDC_COMBO1,29,22,205,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Test",IDC_BUTTON1,239,21,50,14
+    LTEXT           "http://",IDC_STATIC,5,24,22,8
 END
 
 IDD_PPAGEFORMATS DIALOGEX 0, 0, 296, 198
@@ -774,6 +784,16 @@ BEGIN
     EDITTEXT        IDC_EDIT9,7,114,282,14,ES_AUTOHSCROLL
 END
 
+IDD_SUBTITLEDL_DLG DIALOGEX 0, 0, 377, 158
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Subtitles available online"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Download && Open",IDOK,272,136,98,14
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,363,124
+    CONTROL         "Replace currently loaded subtitles",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,138,124,10
+END
+
 IDD_FILEPROPRES DIALOGEX 0, 0, 234, 202
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -982,6 +1002,13 @@ BEGIN
         BOTTOMMARGIN, 200
     END
 
+    IDD_PPAGESUBDB, DIALOG
+    BEGIN
+        VERTGUIDE, 5
+        VERTGUIDE, 289
+        BOTTOMMARGIN, 200
+    END
+
     IDD_PPAGEFORMATS, DIALOG
     BEGIN
         VERTGUIDE, 6
@@ -1142,6 +1169,14 @@ BEGIN
         RIGHTMARGIN, 289
         VERTGUIDE, 7
         VERTGUIDE, 289
+    END
+
+    IDD_SUBTITLEDL_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 370
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 151
     END
 
     IDD_FILEPROPRES, DIALOG
@@ -1418,7 +1453,13 @@ BEGIN
         MENUITEM "Save Thumbnails...",          ID_FILE_SAVE_THUMBNAILS
         MENUITEM SEPARATOR
         MENUITEM "&Load Subtitle...\tCtrl+L",   ID_FILE_LOAD_SUBTITLE
-        MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE       
+        MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE
+        POPUP "Subtitle Database"
+        BEGIN
+            MENUITEM "Search...",                   ID_FILE_ISDB_SEARCH
+            MENUITEM "Upload...",                   ID_FILE_ISDB_UPLOAD
+            MENUITEM "Download...",                 ID_FILE_ISDB_DOWNLOAD
+        END
         MENUITEM SEPARATOR
         MENUITEM "P&roperties",                 ID_FILE_PROPERTIES
         MENUITEM SEPARATOR
@@ -1710,6 +1751,12 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&Load Subtitle...\tCtrl+L",   ID_FILE_LOAD_SUBTITLE
             MENUITEM "Save Subtitle...\tCtrl+S",    ID_FILE_SAVE_SUBTITLE
+            POPUP "Subtitle Database"
+            BEGIN
+                MENUITEM "Search...",                   ID_FILE_ISDB_SEARCH
+                MENUITEM "Upload...",                   ID_FILE_ISDB_UPLOAD
+                MENUITEM "Download...",                 ID_FILE_ISDB_DOWNLOAD
+            END
             MENUITEM SEPARATOR
             MENUITEM "Prope&rties",                 ID_FILE_PROPERTIES
             MENUITEM SEPARATOR
@@ -2032,6 +2079,7 @@ BEGIN
     IDD_PPAGEOUTPUT         "Playback::Output"
     IDD_PPAGEWEBSERVER      "Player::Web Interface"
     IDD_PPAGEAUDIODEC       "Internal Filters::Audio Decoders"
+    IDD_PPAGESUBDB          "Subtitles::Database"
 END
 
 STRINGTABLE 
@@ -2213,6 +2261,7 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_RS_ISDB             "ISDb"
     IDS_RS_POW2TEX          "SPCPow2Tex"
     IDS_R_INTERNAL_FILTERS  "Internal Filters"
     IDS_RS_WEBROOT          "WebRoot"
@@ -2347,5 +2396,4 @@ LANGUAGE 9, 1
 #endif
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-
 

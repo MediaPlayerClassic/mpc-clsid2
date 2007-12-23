@@ -482,20 +482,20 @@ DETOUR_TRAMPOLINE(HANDLE WINAPI Real_CreateFileA(LPCSTR p1, DWORD p2, DWORD p3, 
 DETOUR_TRAMPOLINE(HANDLE WINAPI Real_CreateFileW(LPCWSTR p1, DWORD p2, DWORD p3, LPSECURITY_ATTRIBUTES p4, DWORD p5, DWORD p6, HANDLE p7), CreateFileW);
 HANDLE WINAPI Mine_CreateFileA(LPCSTR p1, DWORD p2, DWORD p3, LPSECURITY_ATTRIBUTES p4, DWORD p5, DWORD p6, HANDLE p7)
 {
-	CStringA fn(p1);
-	fn.MakeLower();
-	int i = fn.Find(".part");
-	if(i > 0 && i == fn.GetLength() - 5)
+	//CStringA fn(p1);
+	//fn.MakeLower();
+	//int i = fn.Find(".part");
+	//if(i > 0 && i == fn.GetLength() - 5)
 		p3 |= FILE_SHARE_WRITE;
 
 	return Real_CreateFileA(p1, p2, p3, p4, p5, p6, p7);
 }
 HANDLE WINAPI Mine_CreateFileW(LPCWSTR p1, DWORD p2, DWORD p3, LPSECURITY_ATTRIBUTES p4, DWORD p5, DWORD p6, HANDLE p7)
 {
-	CStringW fn(p1);
-	fn.MakeLower();
-	int i = fn.Find(L".part");
-	if(i > 0 && i == fn.GetLength() - 5)
+	//CStringW fn(p1);
+	//fn.MakeLower();
+	//int i = fn.Find(L".part");
+	//if(i > 0 && i == fn.GetLength() - 5)
 		p3 |= FILE_SHARE_WRITE;
 
 	return Real_CreateFileW(p1, p2, p3, p4, p5, p6, p7);
@@ -745,7 +745,7 @@ int CMPlayerCApp::ExitInstance()
 {
 	m_s.UpdateData(true);
 
-    OleUninitialize();
+	OleUninitialize();
 
 	return CWinApp::ExitInstance();
 }
@@ -1278,6 +1278,8 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 		pApp->WriteProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_THUMBCOLS), ThumbCols);
 		pApp->WriteProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_THUMBWIDTH), ThumbWidth);		
 
+		pApp->WriteProfileString(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_ISDB), ISDb);
+
 		pApp->WriteProfileString(_T("Shaders"), NULL, NULL);
 		pApp->WriteProfileInt(_T("Shaders"), _T("Initialized"), 1);
 		pApp->WriteProfileString(_T("Shaders"), _T("Combine"), m_shadercombine);
@@ -1621,6 +1623,8 @@ void CMPlayerCApp::Settings::UpdateData(bool fSave)
 		ThumbRows = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_THUMBROWS), 4);
 		ThumbCols = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_THUMBCOLS), 4);
 		ThumbWidth = pApp->GetProfileInt(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_THUMBWIDTH), 1024);
+
+		ISDb = pApp->GetProfileString(ResStr(IDS_R_SETTINGS), ResStr(IDS_RS_ISDB), _T("www.opensubtitles.org/isdb"));
 
 		pApp->WriteProfileInt(ResStr(IDS_R_SETTINGS), _T("LastUsedPage"), 0);
 

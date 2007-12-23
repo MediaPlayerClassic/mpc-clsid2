@@ -452,6 +452,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ISDb.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\jpeg.cpp"
 				>
 			</File>
@@ -620,6 +624,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PPageSubDB.cpp"
+				>
+			</File>
+			<File
 				RelativePath="PPageSubStyle.cpp"
 				>
 			</File>
@@ -726,6 +734,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\SubtitleDlDlg.cpp"
+				>
 			</File>
 			<File
 				RelativePath="TextPassThruFilter.cpp"
@@ -846,6 +858,10 @@
 			</File>
 			<File
 				RelativePath="IQTVideoSurface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ISDb.h"
 				>
 			</File>
 			<File
@@ -1017,6 +1033,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PPageSubDB.h"
+				>
+			</File>
+			<File
 				RelativePath="PPageSubStyle.h"
 				>
 			</File>
@@ -1094,6 +1114,10 @@
 			</File>
 			<File
 				RelativePath=".\StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SubtitleDlDlg.h"
 				>
 			</File>
 			<File
