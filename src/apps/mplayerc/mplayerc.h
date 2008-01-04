@@ -313,6 +313,7 @@ public:
 	bool GetAppDataPath(CString& path);
 	
 	static bool	IsVista();
+	static bool	IsVSFilterInstalled();
 
 // Overrides
 	// ClassWizard generated virtual function overrides
