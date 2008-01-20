@@ -48,7 +48,7 @@ BEGIN
             VALUE "FileDescription", "Matroska Splitter"
             VALUE "FileVersion", "1, 0, 3, 0"
             VALUE "InternalName", "Matroska Splitter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008 Gabest"
             VALUE "OriginalFilename", "MatroskaSplitter.ax"
             VALUE "ProductName", "Matroska Splitter"
             VALUE "ProductVersion", "1, 0, 3, 0"

@@ -48,7 +48,7 @@ BEGIN
             VALUE "FileDescription", "CDDA Reader Filter"
             VALUE "FileVersion", "1, 0, 0, 2"
             VALUE "InternalName", "CDDA Reader Filter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008 Gabest"
             VALUE "OriginalFilename", "CDDAReader.ax"
             VALUE "ProductName", "CDDA Reader Filter"
             VALUE "ProductVersion", "1, 0, 0, 2"

@@ -48,7 +48,7 @@ BEGIN
             VALUE "FileDescription", "RealMedia Splitter"
             VALUE "FileVersion", "1, 0, 1, 2"
             VALUE "InternalName", "RealMedia Splitter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2007"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008"
             VALUE "OriginalFilename", "RealMediaSplitter.ax"
             VALUE "ProductName", "RealMedia Splitter"
             VALUE "ProductVersion", "1, 0, 1, 2"

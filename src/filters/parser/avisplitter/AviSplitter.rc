@@ -48,7 +48,7 @@ BEGIN
             VALUE "FileDescription", "Avi Splitter"
             VALUE "FileVersion", "1, 0, 0, 9"
             VALUE "InternalName", "Avi Splitter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008 Gabest"
             VALUE "OriginalFilename", "AviSplitter.ax"
             VALUE "ProductName", "Avi Splitter"
             VALUE "ProductVersion", "1, 0, 0, 9"

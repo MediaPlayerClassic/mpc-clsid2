@@ -74,7 +74,7 @@ BEGIN
             VALUE "FileDescription", "CDXA Reader Filter"
             VALUE "FileVersion", "1, 0, 0, 2"
             VALUE "InternalName", "CDXA Reader Filter"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2007 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2008 Gabest"
             VALUE "OriginalFilename", "CDXAReader.ax"
             VALUE "ProductName", "CDXA Reader Filter"
             VALUE "ProductVersion", "1, 0, 0, 2"
