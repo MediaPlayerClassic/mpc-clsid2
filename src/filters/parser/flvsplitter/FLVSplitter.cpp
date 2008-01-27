@@ -116,7 +116,8 @@ bool CFLVSplitterFilter::ReadTag(Tag& t)
 	t.TagType = (BYTE)m_pFile->BitRead(8);
 	t.DataSize = (UINT32)m_pFile->BitRead(24);
 	t.TimeStamp = (UINT32)m_pFile->BitRead(24);
-	t.Reserved = (UINT32)m_pFile->BitRead(32);
+	t.TimeStamp |= (UINT32)m_pFile->BitRead(8) << 24;
+	t.StreamID = (UINT32)m_pFile->BitRead(24);
 
 	return m_pFile->GetRemaining() >= t.DataSize;
 }
@@ -224,7 +225,7 @@ HRESULT CFLVSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 		mt.SetSampleSize(1);
 		mt.subtype = GUID_NULL;
 
-		if(t.TagType == 8 && fTypeFlagsAudio)
+		if(t.TagType == 8 && t.DataSize != 0 && fTypeFlagsAudio)
 		{
 			name = L"Audio";
 
@@ -273,7 +274,7 @@ HRESULT CFLVSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 				}
 			}
 		}
-		else if(t.TagType == 9 && fTypeFlagsVideo)
+		else if(t.TagType == 9 && t.DataSize != 0 && fTypeFlagsVideo)
 		{
 			VideoTag vt;
 			if(ReadTag(vt) && vt.FrameType == 1)
