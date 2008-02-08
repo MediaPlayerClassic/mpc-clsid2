@@ -58,8 +58,8 @@ const AMOVIESETUP_PIN sudpPins2[] =
 
 const AMOVIESETUP_FILTER sudFilter[] =
 {
-	{&__uuidof(CFLVSplitterFilter), L"FLV Splitter", MERIT_NORMAL, countof(sudpPins), sudpPins},
-	{&__uuidof(CFLVSourceFilter), L"FLV Source", MERIT_NORMAL, 0, NULL},
+	{&__uuidof(CFLVSplitterFilter), L"FLV Splitter", MERIT_PREFERRED+1, countof(sudpPins), sudpPins},
+	{&__uuidof(CFLVSourceFilter), L"FLV Source", MERIT_NORMAL+1, 0, NULL},
 	__if_exists(CFLVVideoDecoder) {
 	{&__uuidof(CFLVVideoDecoder), L"FLV4 Video Decoder", MERIT_UNLIKELY, countof(sudpPins2), sudpPins2},
 	}

@@ -3853,9 +3853,45 @@ static CString MakeSnapshotFileName(LPCTSTR prefix)
 	return fn;
 }
 
+BOOL CMainFrame::IsRendererCompatibleWithSaveImage()
+{
+	BOOL result = TRUE;
+	AppSettings& s = AfxGetAppSettings();
+
+	if(m_fRealMediaGraph) {
+		if(s.iRMVideoRendererType == VIDRNDT_RM_DEFAULT) {
+			AfxMessageBox(_T("The 'Save Image' and 'Save Thumbnails' functions do not work with the default video renderer for RealMedia.\nSelect one of the DirectX renderers for RealMedia in MPC's output options and reopen the file."));
+			result = FALSE;
+		}
+	} else {
+		if(m_fQuicktimeGraph) {
+			if(s.iQTVideoRendererType == VIDRNDT_QT_DEFAULT) {
+				AfxMessageBox(_T("The 'Save Image and 'Save Thumbnails' functions do not work with the default video renderer for QuickTime.\nSelect one of the DirectX renderers for QuickTime in MPC's output options and reopen the file."));
+				result = FALSE;
+			}	
+		} else {
+			if(m_fShockwaveGraph) {
+				AfxMessageBox(_T("The 'Save Image' and 'Save Thumbnails' functions do not work for Shockwave files."));
+				result = FALSE;
+			} else {
+				if(s.iDSVideoRendererType == VIDRNDT_DS_OVERLAYMIXER) {
+					AfxMessageBox(_T("The 'Save Image' and 'Save Thumbnails' functions do not work with the Overlay Mixer video renderer.\nChange the video renderer in MPC's output options and reopen the file."));
+					result = FALSE;
+				}
+			}
+		}
+	}
+	return result;
+}
+
 void CMainFrame::OnFileSaveImage()
 {
 	AppSettings& s = AfxGetAppSettings();
+
+	/* Check if a compatible renderer is being used */
+	if(!IsRendererCompatibleWithSaveImage()) {
+		return;
+	}
 
 	CPath psrc(s.SnapShotPath);
 	psrc.Combine(s.SnapShotPath, MakeSnapshotFileName(_T("snapshot")));
@@ -3883,6 +3919,13 @@ void CMainFrame::OnFileSaveImage()
 
 void CMainFrame::OnFileSaveImageAuto()
 {
+	AppSettings& s = AfxGetAppSettings();
+
+	/* Check if a compatible renderer is being used */
+	if(!IsRendererCompatibleWithSaveImage()) {
+		return;
+	}
+
 	CString fn;
 	fn.Format(_T("%s\\%s"), AfxGetAppSettings().SnapShotPath, MakeSnapshotFileName(_T("snapshot")));
 	SaveImage(fn);
@@ -3897,6 +3940,11 @@ void CMainFrame::OnUpdateFileSaveImage(CCmdUI* pCmdUI)
 void CMainFrame::OnFileSaveThumbnails()
 {
 	AppSettings& s = AfxGetAppSettings();
+
+	/* Check if a compatible renderer is being used */
+	if(!IsRendererCompatibleWithSaveImage()) {
+		return;
+	}
 
 	CPath psrc(s.SnapShotPath);
 	psrc.Combine(s.SnapShotPath, MakeSnapshotFileName(_T("thumbs")));
@@ -3948,11 +3996,10 @@ void CMainFrame::OnFileLoadsubtitle()
 #ifndef DEBUG
 	if(!m_pCAP)
 	{
-		AfxMessageBox(_T("To load subtitles you have change the video renderer type and reopen the file.\n")
-					_T("- DirectShow: VMR7/VMR9 renderless or Haali's\n")
+		AfxMessageBox(_T("To load subtitles you have change the video renderer and reopen the file.\n")
+					_T("- DirectShow: VMR7/VMR9(renderless) or Haali Video Renderer\n")
 					_T("- RealMedia: Special renderer for RealMedia, or open it through DirectShow\n")
 					_T("- Quicktime: DX7 or DX9 renderer for QuickTime\n")
-					_T("- ShockWave: n/a\n")
 					, MB_OK);
 		return;
 	}
