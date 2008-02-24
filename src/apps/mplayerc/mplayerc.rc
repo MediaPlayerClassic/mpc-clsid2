@@ -8,7 +8,6 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -1269,7 +1268,7 @@ IDF_SHADER_WAVE         FILE                    "res\\shaders\\wave.psh"
 IDF_SHADER_LEVELS       FILE                    "res\\shaders\\levels.psh"
 IDF_SHADER_NIGHTVISION  FILE                    "res\\shaders\\nightvision.psh"
 IDF_SHADER_EDGE_SHARPEN FILE                    "res\\shaders\\EdgeSharpen.psh"
-IDF_SHADER_SHARPEN_COMPLEX FILE                 "res\\shaders\\SharpenComplex.psh"
+IDF_SHADER_SHARPEN_COMPLEX FILE                    "res\\shaders\\SharpenComplex.psh"
 IDF_DEFAULT_CSS         FILE                    "res\\web\\default.css"
 IDF_VBR_GIF             FILE                    "res\\web\\vbg.gif"
 IDF_VBS_GIF             FILE                    "res\\web\\vbs.GIF"
@@ -1303,14 +1302,14 @@ IDF_CONTROLVOLUMEOFF_PNG FILE                    "res\\web\\controlvolumeoff.png
 IDF_CONTROLVOLUMEBAR_PNG FILE                    "res\\web\\controlvolumebar.png"
 IDF_CONTROLVOLUMEGRIP_PNG FILE                    "res\\web\\controlvolumegrip.png"
 IDF_SHADER_RESIZER      FILE                    "res\\shaders\\resizer.psh"
-IDF_LOGO0               FILE                  "res\\logo.0.png"
-IDF_LOGO1               FILE                  "res\\logo.1.png"
-IDF_LOGO2               FILE                  "res\\logo.2.png"
-IDF_LOGO3               FILE                  "res\\logo.3.png"
-IDF_LOGO4               FILE                  "res\\logo.4.png"
-IDF_LOGO5               FILE                  "res\\logo.5.png"
-IDF_LOGO6               FILE                  "res\\logo.6.png"
-IDF_LOGO7               FILE                  "res\\logo.7.png"
+IDF_LOGO0               FILE                    "res\\logo.0.png"
+IDF_LOGO1               FILE                    "res\\logo.1.png"
+IDF_LOGO2               FILE                    "res\\logo.2.png"
+IDF_LOGO3               FILE                    "res\\logo.3.png"
+IDF_LOGO4               FILE                    "res\\logo.4.png"
+IDF_LOGO5               FILE                    "res\\logo.5.png"
+IDF_LOGO6               FILE                    "res\\logo.6.png"
+IDF_LOGO7               FILE                    "res\\logo.7.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1413,7 +1412,6 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", ""
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "Media Player Classic"
             VALUE "FileVersion", "6, 4, 9, 1"
