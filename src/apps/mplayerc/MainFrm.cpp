@@ -292,6 +292,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND_RANGE(ID_ONTOP_NEVER, ID_ONTOP_WHILEPLAYING, OnViewOntop)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_ONTOP_NEVER, ID_ONTOP_WHILEPLAYING, OnUpdateViewOntop)
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
+	
+	ON_COMMAND_RANGE(ID_SUB_DELAY_DOWN, ID_SUB_DELAY_UP, OnSubtitleDelay)
 
 	ON_COMMAND(ID_PLAY_PLAY, OnPlayPlay)
 	ON_COMMAND(ID_PLAY_PAUSE, OnPlayPause)
@@ -2680,6 +2682,7 @@ void CMainFrame::OnFilePostOpenmedia()
 //		ShowControlBar(&m_wndCaptureBar, TRUE, TRUE);
 	}
 
+	if(m_pCAP) m_pCAP->SetSubtitleDelay(0);
 	m_iMediaLoadState = MLS_LOADED;
 
 	// IMPORTANT: must not call any windowing msgs before
@@ -5187,6 +5190,13 @@ void CMainFrame::OnPlayResetRate()
 void CMainFrame::OnUpdatePlayResetRate(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_iMediaLoadState == MLS_LOADED);
+}
+
+void CMainFrame::SetSubtitleDelay(int delay_ms)
+{
+	if(m_pCAP) {
+		m_pCAP->SetSubtitleDelay(delay_ms);
+	}
 }
 
 void CMainFrame::OnPlayChangeAudDelay(UINT nID)
@@ -9995,4 +10005,19 @@ void CGraphThread::OnClose(WPARAM wParam, LPARAM lParam)
 {
 	if(m_pMainFrame) m_pMainFrame->CloseMediaPrivate();
 	if(CAMEvent* e = (CAMEvent*)lParam) e->Set();
+}
+
+afx_msg void CMainFrame::OnSubtitleDelay(UINT nID)
+{
+	if(m_pCAP) {
+		int newDelay;
+		int oldDelay = m_pCAP->GetSubtitleDelay();
+
+		if(nID == ID_SUB_DELAY_DOWN)
+			newDelay = oldDelay-AfxGetAppSettings().nSubDelayInterval;
+		else
+			newDelay = oldDelay+AfxGetAppSettings().nSubDelayInterval;
+
+		SetSubtitleDelay(newDelay);
+	}
 }

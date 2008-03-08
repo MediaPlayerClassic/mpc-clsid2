@@ -720,6 +720,9 @@
 #define IDS_FAVFILES                    14188
 #define IDS_FAVDVDS                     14189
 #define IDS_FAVDEVICES                  14190
+#define ID_SUB_DELAY_DOWN               14191
+#define ID_SUB_DELAY_UP                 14192
+#define IDS_RS_SUBDELAYINTERVAL         14193
 
 // Next default values for new objects
 // 

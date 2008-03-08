@@ -44,6 +44,7 @@ public:
 	CSpinButtonCtrl m_nSPCSizeCtrl;
 	CComboBox m_spmaxres;
 	BOOL m_fSPCPow2Tex;
+	int m_nSubDelayInterval;
 
 // Dialog Data
 	enum { IDD = IDD_PPAGESUBTITLES };
@@ -52,6 +53,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
+	void	OnSubDelayInterval();
 
 	DECLARE_MESSAGE_MAP()
 

@@ -414,6 +414,7 @@ public:
 		int nHorPos, nVerPos;
 		int nSPCSize;
 		int nSPCMaxRes;
+		int nSubDelayInterval;
 		bool fSPCPow2Tex;
 		bool fEnableSubtitles;
 
