@@ -296,21 +296,29 @@ bool CMediaFormats::FindExt(CString ext, bool fAudioOnly)
 
 void CMediaFormats::GetFilter(CString& filter, CAtlArray<CString>& mask)
 {
-	filter += _T("Media files (all types)|__dummy|");
+	CString		strTemp;
+
+	filter += _T("Media files (all types)|");
 	mask.Add(_T(""));
 
 	for(int i = 0; i < GetCount(); i++) 
-		mask[0] += GetAt(i).GetFilter() + _T(";");
+	{
+		strTemp  = GetAt(i).GetFilter() + _T(";");;
+		mask[0] += strTemp;
+		filter  += strTemp;
+	}
 	mask[0].TrimRight(_T(";"));
+	filter.TrimRight(_T(";"));
+	filter += _T("|");
 
 	for(int i = 0; i < GetCount(); i++)
 	{
 		CMediaFormatCategory& mfc = GetAt(i);
-		filter += mfc.GetLabel() + _T("|__dummy|");
+		filter += mfc.GetLabel() + _T("|" + GetAt(i).GetFilter() + _T("|"));
 		mask.Add(mfc.GetFilter());
 	}
 
-	filter += _T("All files (*.*)|__dummy|");
+	filter += _T("All files (*.*)|(*.*)|");
 	mask.Add(_T("*.*"));
 
 	filter += _T("|");
@@ -318,27 +326,32 @@ void CMediaFormats::GetFilter(CString& filter, CAtlArray<CString>& mask)
 
 void CMediaFormats::GetAudioFilter(CString& filter, CAtlArray<CString>& mask)
 {
-	filter += _T("Audio files (all types)|__dummy|");
+	CString		strTemp;
+	filter += _T("Audio files (all types)|");
 	mask.Add(_T(""));
 
 	for(int i = 0; i < GetCount(); i++)
 	{
 		CMediaFormatCategory& mfc = GetAt(i);
 		if(!mfc.IsAudioOnly() || mfc.GetEngineType() != DirectShow) continue;
-		mask[0] += GetAt(i).GetFilter() + _T(";");
+		strTemp  = GetAt(i).GetFilter() + _T(";");
+		mask[0] += strTemp;
+		filter  += strTemp;
 	}
 
 	mask[0].TrimRight(_T(";"));
+	filter.TrimRight(_T(";"));
+	filter += _T("|");
 
 	for(int i = 0; i < GetCount(); i++)
 	{
 		CMediaFormatCategory& mfc = GetAt(i);
 		if(!mfc.IsAudioOnly() || mfc.GetEngineType() != DirectShow) continue;
-		filter += mfc.GetLabel() + _T("|__dummy|");
+		filter += mfc.GetLabel() + _T("|") + GetAt(i).GetFilter() + _T("|");
 		mask.Add(mfc.GetFilter());
 	}
 
-	filter += _T("All files (*.*)|__dummy|");
+	filter += _T("All files (*.*)|(*.*)|");
 	mask.Add(_T("*.*"));
 
 	filter += _T("|");
