@@ -6817,6 +6817,19 @@ void CMainFrame::SetupIViAudReg()
 // Open/Close
 //
 
+bool CMainFrame::IsRealEngineCompatible(CString strFilename)
+{
+	// RealMedia engine doesn't support Unicode filenames (nor filenames with # characters)
+	for(int i=0; i<strFilename.GetLength(); i++)
+	{
+		WCHAR	Char = strFilename[i];
+		if (Char<32 || Char>126 || Char==35)
+			return false;
+	}
+	return true;
+}
+
+
 void CMainFrame::OpenCreateGraphObject(OpenMediaData* pOMD)
 {
 	ASSERT(pGB == NULL);
@@ -6862,6 +6875,11 @@ void CMainFrame::OpenCreateGraphObject(OpenMediaData* pOMD)
 
 		if(engine == RealMedia)
 		{
+			if (!IsRealEngineCompatible(p->fns.GetHead())) {
+				AfxMessageBox(_T("Media Player Classic is not able to play this RealMedia file because\nits filename contains illegal characters. Please rename the file so that\nthe filename contains only ascii characters [a-z 0-9 space _ . ' ( )]."));
+				throw _T("RealMedia error: illegal characters in filename");
+			}
+				
 			if(!(pUnk = (IUnknown*)(INonDelegatingUnknown*)new CRealMediaGraph(m_wndView.m_hWnd, hr)))
 				throw _T("Out of memory");
 

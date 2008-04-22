@@ -668,4 +668,5 @@ public:
 	afx_msg void OnClose();
 	
 	void		SetSubtitleDelay(int delay_ms);
+	bool		IsRealEngineCompatible(CString strFilename);
 };
