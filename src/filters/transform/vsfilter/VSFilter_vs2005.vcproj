@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="VSFilter"
 	ProjectGUID="{F671100C-469F-4723-AAC4-B7FE4F5B8DC4}"
 	RootNamespace="VSFilter"
@@ -216,7 +216,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="delayimp.lib strmbaseRU.lib dsutilRU.lib subtitlesRU.lib subpicRU.lib basevideofilterRU.lib winmm.lib"
+				AdditionalDependencies="delayimp.lib strmbaseRU.lib dsutilRU.lib subtitlesRU.lib subpicRU.lib basevideofilterRU.lib libssfRU.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				Version=""
 				AdditionalLibraryDirectories="..\..\..\..\lib"
@@ -298,7 +298,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="delayimp.lib strmbaseR.lib dsutilR.lib subtitlesR.lib subpicR.lib basevideofilterR.lib winmm.lib"
+				AdditionalDependencies="delayimp.lib strmbaseR.lib dsutilR.lib subtitlesR.lib subpicR.lib basevideofilterR.lib libssfR.lib winmm.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				Version=""
 				AdditionalLibraryDirectories="..\..\..\..\lib"
