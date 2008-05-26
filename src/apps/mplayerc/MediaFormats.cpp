@@ -184,7 +184,7 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("Windows Media Audio file"), _T("wma"), true));
 		ADDFMT((_T("Video file"), _T("avi")));
 		ADDFMT((_T("Audio file"), _T("wav"), true));
-		ADDFMT((_T("MPEG Media file"), _T("mpg mpeg mpe m1v m2v mpv2 mp2v dat ts tp tpr pva pss")));
+		ADDFMT((_T("MPEG Media file"), _T("mpg mpeg mpe m1v m2v mpv2 mp2v ts tp tpr pva pss m2ts m2t")));
 		ADDFMT((_T("MPEG Audio file"), _T("mpa mp2 m1a m2a"), true));
 		ADDFMT((_T("DVD file"), _T("vob ifo")));
 		ADDFMT((_T("DVD Audio file"), _T("ac3 dts"), true));
@@ -198,8 +198,8 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("CD Audio Track"), _T("cda"), true, _T("Windows 2000/XP or better")));
 		ADDFMT((_T("FLIC file"), _T("fli flc flic")));
 		ADDFMT((_T("DVD2AVI Project file"), _T("d2v")));
-		ADDFMT((_T("MPEG4 file"), _T("mp4 m4v m4b hdmov 3gp 3gpp")));
-		ADDFMT((_T("MPEG4 Audio file"), _T("m4a aac"), true));
+		ADDFMT((_T("MPEG4 file"), _T("mp4 m4v hdmov 3gp 3gpp")));
+		ADDFMT((_T("MPEG4 Audio file"), _T("m4a m4b aac"), true));
 		ADDFMT((_T("Matroska Media file"), _T("mkv")));
 		ADDFMT((_T("Matroska Audio file"), _T("mka"), true));
 		ADDFMT((_T("Smacker/Bink Media file"), _T("smk bik"), false, _T("smackw32/binkw32.dll in dll path")));
