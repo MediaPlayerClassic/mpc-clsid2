@@ -453,6 +453,8 @@
 #define IDC_DSVMR9LOADMIXER             12131
 #define IDC_CHECK_MPEGINTERLACED        12132
 #define IDC_DSVMR9YUVMIXER              12133
+#define IDC_VERSION                     12134
+
 #define IDS_R_SETTINGS                  13000
 #define IDS_RS_TITLEBARTEXTSTYLE        13001
 #define IDS_RS_USEWMASFREADER           13002

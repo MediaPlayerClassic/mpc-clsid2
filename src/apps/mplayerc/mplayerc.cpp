@@ -28,6 +28,7 @@
 #include <Tlhelp32.h>
 #include "MainFrm.h"
 #include "..\..\DSUtil\DSUtil.h"
+#include "revision.h"
 
 /////////
 
@@ -203,18 +204,20 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_appname;
+	CString m_strRevision;
 	virtual BOOL OnInitDialog()
 	{
-#ifdef UNICODE
 		UpdateData();
+#ifdef UNICODE
 		m_appname += _T(" (unicode build)");
-		UpdateData(FALSE);
 #endif
+		m_strRevision += MPC_REV_STR;
+		UpdateData(FALSE);
 		return TRUE;
 	}
 };
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD), m_appname(_T(""))
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD), m_appname(_T("")), m_strRevision(_T(""))
 {
 	//{{AFX_DATA_INIT(CAboutDlg)
 	//}}AFX_DATA_INIT
@@ -226,6 +229,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CAboutDlg)
 	//}}AFX_DATA_MAP
 	DDX_Text(pDX, IDC_STATIC1, m_appname);
+	DDX_Text(pDX, IDC_VERSION, m_strRevision);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
