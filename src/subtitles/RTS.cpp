@@ -519,7 +519,7 @@ bool CPolygon::CreatePath()
 
 // CClipper
 
-CClipper::CClipper(CStringW str, CSize size, double scalex, double scaley) 
+CClipper::CClipper(CStringW str, CSize size, double scalex, double scaley, bool inverse) 
 	: CPolygon(STSStyle(), str, 0, 0, 0, scalex, scaley, 0)
 {
 	m_size.cx = m_size.cy = 0;
@@ -528,6 +528,7 @@ CClipper::CClipper(CStringW str, CSize size, double scalex, double scaley)
 	if(size.cx < 0 || size.cy < 0 || !(m_pAlphaMask = new BYTE[size.cx*size.cy])) return;
 
 	m_size = size;
+	m_inverse = inverse;
 
 	memset(m_pAlphaMask, 0, size.cx*size.cy);
 
@@ -556,6 +557,13 @@ CClipper::CClipper(CStringW str, CSize size, double scalex, double scaley)
 		src += 2*mOverlayWidth;
 		dst += m_size.cx;
 	}
+
+	if(inverse)
+	{
+		BYTE* dst = m_pAlphaMask;
+		for(int i = size.cx*size.cy; i>0; --i, ++dst)
+			*dst = 0x40 - *dst; // mask is 6 bit
+	}
 }
 
 CClipper::~CClipper()
@@ -566,7 +574,7 @@ CClipper::~CClipper()
 
 CWord* CClipper::Copy()
 {
-	return(new CClipper(m_str, m_size, m_scalex, m_scaley));
+	return(new CClipper(m_str, m_size, m_scalex, m_scaley, m_inverse));
 }
 
 bool CClipper::Append(CWord* w)
@@ -794,6 +802,7 @@ CSubtitle::CSubtitle()
 {
 	memset(m_effects, 0, sizeof(Effect*)*EF_NUMBEROFEFFECTS);
 	m_pClipper = NULL;
+	m_clipInverse = false;
 	m_scalex = m_scaley = 1;
 }
 
@@ -966,7 +975,7 @@ void CSubtitle::CreateClippers(CSize size)
 		{
 			CStringW str;
 			str.Format(L"m %d %d l %d %d %d %d %d %d", 0, 0, w, 0, w, h, 0, h);
-			m_pClipper = new CClipper(str, size, 1, 1);
+			m_pClipper = new CClipper(str, size, 1, 1, false);
 			if(!m_pClipper) return;
 		}
 
@@ -1000,7 +1009,7 @@ void CSubtitle::CreateClippers(CSize size)
 		{
 			CStringW str;
 			str.Format(L"m %d %d l %d %d %d %d %d %d", 0, 0, w, 0, w, h, 0, h);
-			m_pClipper = new CClipper(str, size, 1, 1);
+			m_pClipper = new CClipper(str, size, 1, 1, false);
 			if(!m_pClipper) return;
 		}
 
@@ -1453,6 +1462,8 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 			params.Add(cmd.Mid(3)), cmd = cmd.Left(3);
 		else if(!cmd.Find(L"fs"))
 			params.Add(cmd.Mid(2)), cmd = cmd.Left(2);
+		else if(!cmd.Find(L"iclip"))
+			;
 		else if(!cmd.Find(L"i"))
 			params.Add(cmd.Mid(1)), cmd = cmd.Left(1);
 		else if(!cmd.Find(L"kt") || !cmd.Find(L"kf") || !cmd.Find(L"ko"))
@@ -1571,20 +1582,24 @@ bool CRenderedTextSubtitle::ParseSSATag(CSubtitle* sub, CStringW str, STSStyle& 
 				? (n == 0 ? FW_NORMAL : n == 1 ? FW_BOLD : n >= 100 ? n : org.fontWeight)
 				: org.fontWeight;
 		}
-		else if(cmd == L"clip")
+		else if(cmd == L"clip" || cmd == L"iclip")
 		{
+			bool invert = (cmd == L"iclip");
+
 			if(params.GetCount() == 1 && !sub->m_pClipper)
 			{
-				sub->m_pClipper = new CClipper(params[0], CSize(m_size.cx>>3, m_size.cy>>3), sub->m_scalex, sub->m_scaley);
+				sub->m_pClipper = new CClipper(params[0], CSize(m_size.cx>>3, m_size.cy>>3), sub->m_scalex, sub->m_scaley, invert);
 			}
 			else if(params.GetCount() == 2 && !sub->m_pClipper)
 			{
 				int scale = max(wcstol(p, NULL, 10), 1);
-				sub->m_pClipper = new CClipper(params[1], CSize(m_size.cx>>3, m_size.cy>>3), sub->m_scalex/(1<<(scale-1)), sub->m_scaley/(1<<(scale-1)));
+				sub->m_pClipper = new CClipper(params[1], CSize(m_size.cx>>3, m_size.cy>>3), sub->m_scalex/(1<<(scale-1)), sub->m_scaley/(1<<(scale-1)), invert);
 			}
 			else if(params.GetCount() == 4)
 			{
 				CRect r;
+
+				sub->m_clipInverse = invert;
 
 				r.SetRect(
 					wcstol(params[0], NULL, 10),
@@ -2485,6 +2500,13 @@ STDMETHODIMP CRenderedTextSubtitle::Render(SubPicDesc& spd, REFERENCE_TIME rt, d
 
 		p = p2;
 
+		// Rectangles for inverse clip
+		CRect iclipRect[4];
+		iclipRect[0] = CRect(0, 0, spd.w, clipRect.top);
+		iclipRect[1] = CRect(0, clipRect.top, clipRect.left, clipRect.bottom);
+		iclipRect[2] = CRect(clipRect.right, clipRect.top, spd.w, clipRect.bottom);
+		iclipRect[3] = CRect(0, clipRect.bottom, spd.w, spd.h);
+
 		pos = s->GetHeadPosition();
 		while(pos) 
 		{
@@ -2494,7 +2516,17 @@ STDMETHODIMP CRenderedTextSubtitle::Render(SubPicDesc& spd, REFERENCE_TIME rt, d
 				: (s->m_scrAlignment%3) == 0 ? org.x - l->m_width
 				:							   org.x - (l->m_width/2);
 
-			bbox2 |= l->PaintShadow(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			if (s->m_clipInverse)
+			{
+				bbox2 |= l->PaintShadow(spd, iclipRect[0], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintShadow(spd, iclipRect[1], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintShadow(spd, iclipRect[2], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintShadow(spd, iclipRect[3], pAlphaMask, p, org2, m_time, alpha);
+			}
+			else
+			{
+				bbox2 |= l->PaintShadow(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			}
 
 			p.y += l->m_ascent + l->m_descent;
 		}
@@ -2510,7 +2542,17 @@ STDMETHODIMP CRenderedTextSubtitle::Render(SubPicDesc& spd, REFERENCE_TIME rt, d
 				: (s->m_scrAlignment%3) == 0 ? org.x - l->m_width
 				:							   org.x - (l->m_width/2);
 
-			bbox2 |= l->PaintOutline(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			if (s->m_clipInverse)
+			{
+				bbox2 |= l->PaintOutline(spd, iclipRect[0], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintOutline(spd, iclipRect[1], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintOutline(spd, iclipRect[2], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintOutline(spd, iclipRect[3], pAlphaMask, p, org2, m_time, alpha);
+			}
+			else
+			{
+				bbox2 |= l->PaintOutline(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			}
 
 			p.y += l->m_ascent + l->m_descent;
 		}
@@ -2526,7 +2568,17 @@ STDMETHODIMP CRenderedTextSubtitle::Render(SubPicDesc& spd, REFERENCE_TIME rt, d
 				: (s->m_scrAlignment%3) == 0 ? org.x - l->m_width
 				:							   org.x - (l->m_width/2);
 
-			bbox2 |= l->PaintBody(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			if (s->m_clipInverse)
+			{
+				bbox2 |= l->PaintBody(spd, iclipRect[0], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintBody(spd, iclipRect[1], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintBody(spd, iclipRect[2], pAlphaMask, p, org2, m_time, alpha);
+				bbox2 |= l->PaintBody(spd, iclipRect[3], pAlphaMask, p, org2, m_time, alpha);
+			}
+			else
+			{
+				bbox2 |= l->PaintBody(spd, clipRect, pAlphaMask, p, org2, m_time, alpha);
+			}
 
 			p.y += l->m_ascent + l->m_descent;
 		}
