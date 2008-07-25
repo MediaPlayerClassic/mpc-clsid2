@@ -355,6 +355,7 @@ bool Rasterizer::ScanConvert()
 
 	mOutline.clear();
 	mWideOutline.clear();
+	mWideBorder = 0;
 
 	// Determine bounding box
 
@@ -649,18 +650,30 @@ void Rasterizer::_OverlapRegion(tSpanBuffer& dst, tSpanBuffer& src, int dx, int 
 	}
 }
 
-bool Rasterizer::CreateWidenedRegion(int r)
+bool Rasterizer::CreateWidenedRegion(int rx, int ry)
 {
-	if(r < 0) r = 0;
+	if(rx < 0) rx = 0;
+	if(ry < 0) ry = 0;
 
-	for(int y = -r; y <= r; ++y)
+	mWideBorder = max(rx,ry);
+
+	if (ry > 0)
 	{
-		int x = (int)(0.5 + sqrt(float(r*r - y*y)));
+		// Do a half circle.
+		// _OverlapRegion mirrors this so both halves are done.
+		for(int y = -ry; y <= ry; ++y)
+		{
+			int x = (int)(0.5 + sqrt(float(ry*ry - y*y)) * float(rx)/float(ry));
 
-		_OverlapRegion(mWideOutline, mOutline, x, y);
+			_OverlapRegion(mWideOutline, mOutline, x, y);
+		}
 	}
-
-	mWideBorder = r;
+	else if (ry == 0 && rx > 0)
+	{
+		// There are artifacts if we don't make at least two overlaps of the line, even at same Y coord
+		_OverlapRegion(mWideOutline, mOutline, rx, 0);
+		_OverlapRegion(mWideOutline, mOutline, rx, 0);
+	}
 
 	return true;
 }
