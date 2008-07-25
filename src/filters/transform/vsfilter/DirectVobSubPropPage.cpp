@@ -768,38 +768,6 @@ CDVSAboutPPage::CDVSAboutPPage(LPUNKNOWN lpunk, HRESULT* phr) :
 
 }
 
-bool CDVSAboutPPage::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch(uMsg)
-    {
-        case WM_COMMAND:
-        {
-			switch(HIWORD(wParam))
-			{
-				case BN_CLICKED:
-				{
-					if(LOWORD(wParam) == IDC_HOMEPAGEBTN)
-					{
-						AFX_MANAGE_STATE(AfxGetStaticModuleState());
-						ShellExecute(m_Dlg, _T("open"), ResStr(IDS_URL_HOMEPAGE), NULL, NULL, SW_SHOWNORMAL);
-						return(true);
-					}
-					else if(LOWORD(wParam) == IDC_BUGREPORTBTN)
-					{
-						AFX_MANAGE_STATE(AfxGetStaticModuleState());
-						ShellExecute(m_Dlg, _T("open"), ResStr(IDS_URL_EMAIL), NULL, NULL, SW_SHOWNORMAL);
-						return(true);
-					}
-				}
-				break;
-			}
-		}
-		break;
-	}
-
-    return(false);
-}
-
 /* CDVSZoomPPage */
 
 CDVSZoomPPage::CDVSZoomPPage(LPUNKNOWN pUnk, HRESULT* phr) :

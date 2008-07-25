@@ -153,9 +153,6 @@ public:
 [uuid("F544E0F5-CA3C-47ea-A64D-35FCF1602396")]
 class CDVSAboutPPage : public CDVSBasePPage
 {
-protected:
-    virtual bool OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 public:
     CDVSAboutPPage(LPUNKNOWN lpunk, HRESULT* phr);
 };

@@ -44,8 +44,6 @@
 #define IDS_RG_EXTERNALLOAD             139
 #define IDS_RG_WEBLOAD                  140
 #define IDS_RG_EMBEDDEDLOAD             141
-#define IDS_URL_HOMEPAGE                142
-#define IDS_URL_EMAIL                   143
 #define IDS_R_TIMING                    144
 #define IDS_RTM_SUBTITLEDELAY           145
 #define IDS_RTM_SUBTITLESPEEDMUL        146
@@ -80,7 +78,6 @@
 #define IDC_FILENAME                    201
 #define IDD_DVSMAINPAGE                 201
 #define IDC_OPEN                        202
-#define IDC_HOMEPAGEBTN                 202
 #define IDD_DVSZOOMPAGE                 202
 #define IDC_FLIP                        203
 #define IDC_HIDE                        204
@@ -89,7 +86,6 @@
 #define IDC_ONLYSHOWFORCEDSUBS          207
 #define IDC_POLYGONIZE                  208
 #define IDC_FONT                        212
-#define IDC_BUGREPORTBTN                212
 #define IDC_CONFIGDLG                   213
 #define IDC_SHADOW                      214
 #define IDI_ICON1                       214
