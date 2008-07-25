@@ -783,8 +783,21 @@ bool Rasterizer::Rasterize(int xsub, int ysub, bool fBlur)
 
 static __forceinline void pixmix(DWORD *dst, DWORD color, DWORD alpha)
 {
-	int a = (((alpha)*(color>>24))>>12)&0xff;
+	int a = (((alpha)*(color>>24))>>6)&0xff;
+	// Make sure both a and ia are in range 1..256 for the >>8 operations below to be correct
 	int ia = 256-a;
+	a+=1;
+
+	*dst = ((((*dst&0x00ff00ff)*ia + (color&0x00ff00ff)*a)&0xff00ff00)>>8)
+			| ((((*dst&0x0000ff00)*ia + (color&0x0000ff00)*a)&0x00ff0000)>>8)
+			| ((((*dst>>8)&0x00ff0000)*ia)&0xff000000);
+}
+
+static __forceinline void pixmix2(DWORD *dst, DWORD color, DWORD shapealpha, DWORD clipalpha)
+{
+	int a = (((shapealpha)*(clipalpha)*(color>>24))>>12)&0xff;
+	int ia = 256-a;
+	a+=1;
 
 	*dst = ((((*dst&0x00ff00ff)*ia + (color&0x00ff00ff)*a)&0xff00ff00)>>8)
 			| ((((*dst&0x0000ff00)*ia + (color&0x0000ff00)*a)&0x00ff0000)>>8)
@@ -796,11 +809,11 @@ static __forceinline void pixmix(DWORD *dst, DWORD color, DWORD alpha)
 
 static __forceinline void pixmix_sse2(DWORD* dst, DWORD color, DWORD alpha)
 {
-	alpha = ((alpha * (color>>24)) >> 12) & 0xff;
+	alpha = (((alpha) * (color>>24)) >> 6) & 0xff;
 	color &= 0xffffff;
 
 	__m128i zero = _mm_setzero_si128();
-	__m128i a = _mm_set1_epi32((alpha << 16) | (0x100 - alpha));
+	__m128i a = _mm_set1_epi32(((alpha+1) << 16) | (0x100 - alpha));
 	__m128i d = _mm_unpacklo_epi8(_mm_cvtsi32_si128(*dst), zero);
 	__m128i s = _mm_unpacklo_epi8(_mm_cvtsi32_si128(color), zero);
 	__m128i r = _mm_unpacklo_epi16(d, s);
@@ -813,8 +826,52 @@ static __forceinline void pixmix_sse2(DWORD* dst, DWORD color, DWORD alpha)
 	*dst = (DWORD)_mm_cvtsi128_si32(r);
 }
 
+static __forceinline void pixmix2_sse2(DWORD* dst, DWORD color, DWORD shapealpha, DWORD clipalpha)
+{
+	int alpha = (((shapealpha)*(clipalpha)*(color>>24))>>12)&0xff;
+	color &= 0xffffff;
+
+	__m128i zero = _mm_setzero_si128();
+	__m128i a = _mm_set1_epi32(((alpha+1) << 16) | (0x100 - alpha));
+	__m128i d = _mm_unpacklo_epi8(_mm_cvtsi32_si128(*dst), zero);
+	__m128i s = _mm_unpacklo_epi8(_mm_cvtsi32_si128(color), zero);
+	__m128i r = _mm_unpacklo_epi16(d, s);
+
+	r = _mm_madd_epi16(r, a);
+	r = _mm_srli_epi32(r, 8);
+	r = _mm_packs_epi32(r, r);
+	r = _mm_packus_epi16(r, r);
+
+	*dst = (DWORD)_mm_cvtsi128_si32(r);
+}
+
+#include <mmintrin.h>
+
+// Calculate a - b clamping to 0 instead of underflowing
+static __forceinline DWORD safe_subtract(DWORD a, DWORD b)
+{
+	__m64 ap = _mm_cvtsi32_si64(a);
+	__m64 bp = _mm_cvtsi32_si64(b);
+	__m64 rp = _mm_subs_pu16(ap, bp);
+	DWORD r = (DWORD)_mm_cvtsi64_si32(rp);
+	_mm_empty();
+	return r;
+}
+
+// For CPUID usage in Rasterizer::Draw
 #include "../dsutil/vd.h"
 
+static const __int64 _00ff00ff00ff00ff = 0x00ff00ff00ff00ffi64;
+
+// Render a subpicture onto a surface.
+// spd is the surface to render on.
+// clipRect is a rectangular clip region to render inside.
+// pAlphaMask is an alpha clipping mask.
+// xsub and ysub ???
+// switchpts seems to be an array of fill colours interlaced with coordinates.
+//    switchpts[i*2] contains a colour and switchpts[i*2+1] contains the coordinate to use that colour from
+// fBody tells whether to render the body of the subs.
+// fBorder tells whether to render the border of the subs.
 CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int xsub, int ysub, const long* switchpts, bool fBody, bool fBorder)
 {
 	CRect bbox(0, 0, 0, 0);
@@ -823,20 +880,26 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 
 	// clip
 
+	// Limit drawn area to intersection of rendering surface and rectangular clip area
 	CRect r(0, 0, spd.w, spd.h);
 	r &= clipRect;
 
+	// Remember that all subtitle coordinates are specified in 1/8 pixels
+	// (x+4)>>3 rounds to nearest whole pixel.
+	// ??? What is xsub, ysub, mOffsetX and mOffsetY ?
 	int x = (xsub + mOffsetX + 4)>>3;
 	int y = (ysub + mOffsetY + 4)>>3;
 	int w = mOverlayWidth;
 	int h = mOverlayHeight;
 	int xo = 0, yo = 0;
 
+	// Again, limiting?
 	if(x < r.left) {xo = r.left-x; w -= r.left-x; x = r.left;}
 	if(y < r.top) {yo = r.top-y; h -= r.top-y; y = r.top;}
 	if(x+w > r.right) w = r.right-x;
 	if(y+h > r.bottom) h = r.bottom-y;
 
+	// Check if there's actually anything to render
 	if(w <= 0 || h <= 0) return(bbox);
 
 	bbox.SetRect(x, y, x+w, y+h);
@@ -844,34 +907,71 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 
 	// draw
 
+	// The alpha bitmap of the subtitles?
 	const byte* src = mpOverlayBuffer + 2*(mOverlayWidth * yo + xo);
+	// s points to what the "body" to use is
+	// If we're rendering body fill and border, src+1 points to the array of
+	// widened regions which contain both border and fill in one.
 	const byte* s = fBorder ? (src+1) : src;
+	// The complex "vector clip mask" I think.
 	const byte* am = pAlphaMask + spd.w * y + x;
+	// How would this differ from src?
 	unsigned long* dst = (unsigned long *)((char *)spd.bits + spd.pitch * y) + x;
 
+	// Grab the first colour
 	unsigned long color = switchpts[0];
 
+	// CPUID from VDub
 	bool fSSE2 = !!(g_cpuid.m_flags & CCpuID::sse2);
 
+	// Every remaining line in the bitmap to be rendered...
 	while(h--)
 	{
+		// Basic case of no complex clipping mask
 		if(!pAlphaMask)
 		{
+			// If the first colour switching coordinate is at "infinite" we're
+			// never switching and can use some simpler code.
+			// ??? Is this optimisation really worth the extra readability issues it adds?
 			if(switchpts[1] == 0xffffffff)
 			{
+				// fBody is true if we're rendering a fill or a shadow.
 				if(fBody)
 				{
-					if(fSSE2) for(int wt=0; wt<w; ++wt) pixmix_sse2(&dst[wt], color, s[wt*2]<<6);
-					else for(int wt=0; wt<w; ++wt) pixmix(&dst[wt], color, s[wt*2]<<6);
+					// Run over every pixel, overlaying the subtitles with the fill colour
+					if(fSSE2)
+						for(int wt=0; wt<w; ++wt)
+							// The <<6 is due to pixmix expecting the alpha parameter to be
+							// the multiplication of two 6-bit unsigned numbers but we
+							// only have one here. (No alpha mask.)
+							pixmix_sse2(&dst[wt], color, s[wt*2]);
+					else
+						for(int wt=0; wt<w; ++wt)
+							pixmix(&dst[wt], color, s[wt*2]);
 				}
+				// Not painting body, ie. painting border without fill in it
 				else
 				{
-					if(fSSE2) for(int wt=0; wt<w; ++wt) pixmix_sse2(&dst[wt], color, (src[wt*2+1] - src[wt*2])<<6);
-					else for(int wt=0; wt<w; ++wt) pixmix(&dst[wt], color, (src[wt*2+1] - src[wt*2])<<6);
+					if(fSSE2)
+						for(int wt=0; wt<w; ++wt)
+							// src contains two different bitmaps, interlaced per pixel.
+							// The first stored is the fill, the second is the widened
+							// fill region created by CreateWidenedRegion().
+							// Since we're drawing only the border, we must otain that
+							// by subtracting the fill from the widened region. The
+							// subtraction must be saturating since the widened region
+							// pixel value can be smaller than the fill value.
+							// This happens when blur edges is used.
+							pixmix_sse2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]));
+					else
+						for(int wt=0; wt<w; ++wt)
+							pixmix(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]));
 				}
 			}
+			// not (switchpts[1] == 0xffffffff)
 			else
 			{
+				// switchpts plays an important rule here
 				const long *sw = switchpts;
 
 				if(fBody)
@@ -879,33 +979,38 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 					if(fSSE2) 
 					for(int wt=0; wt<w; ++wt)
 					{
+						// xo is the offset (usually negative) we have moved into the image
+						// So if we have passed the switchpoint (?) switch to another colour
+						// (So switchpts stores both colours *and* coordinates?)
 						if(wt+xo >= sw[1]) {while(wt+xo >= sw[1]) sw += 2; color = sw[-2];}
-						pixmix_sse2(&dst[wt], color, s[wt*2]<<6);
+						pixmix_sse2(&dst[wt], color, s[wt*2]);
 					}
 					else
 					for(int wt=0; wt<w; ++wt)
 					{
 						if(wt+xo >= sw[1]) {while(wt+xo >= sw[1]) sw += 2; color = sw[-2];}
-						pixmix(&dst[wt], color, s[wt*2]<<6);
+						pixmix(&dst[wt], color, s[wt*2]);
 					}
 				}
+				// Not body
 				else
 				{
 					if(fSSE2) 
 					for(int wt=0; wt<w; ++wt)
 					{
 						if(wt+xo >= sw[1]) {while(wt+xo >= sw[1]) sw += 2; color = sw[-2];} 
-						pixmix_sse2(&dst[wt], color, (src[wt*2+1] - src[wt*2])<<6);
+						pixmix_sse2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]));
 					}
 					else
 					for(int wt=0; wt<w; ++wt)
 					{
 						if(wt+xo >= sw[1]) {while(wt+xo >= sw[1]) sw += 2; color = sw[-2];} 
-						pixmix(&dst[wt], color, (src[wt*2+1] - src[wt*2])<<6);
+						pixmix(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]));
 					}
 				}
 			}
 		}
+		// Here we *do* have an alpha mask
 		else
 		{
 			if(switchpts[1] == 0xffffffff)
@@ -914,19 +1019,24 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 				{
 					if(fSSE2)
 						for(int wt=0; wt<w; ++wt)
-							pixmix_sse2(&dst[wt], color, s[wt*2] * am[wt]);
+							// Both s and am contain 6-bit bitmaps of two different
+							// alpha masks; s is the subtitle shape and am is the
+							// clipping mask.
+							// Multiplying them together yields a 12-bit number.
+							// I think some imprecision is introduced here??
+							pixmix2_sse2(&dst[wt], color, s[wt*2], am[wt]);
 					else
 						for(int wt=0; wt<w; ++wt)
-							pixmix(&dst[wt], color, s[wt*2] * am[wt]);
+							pixmix2(&dst[wt], color, s[wt*2], am[wt]);
 				}
 				else
 				{
 					if(fSSE2)
 						for(int wt=0; wt<w; ++wt)
-							pixmix_sse2(&dst[wt], color, (src[wt*2+1] - src[wt*2]) * am[wt]);
+							pixmix2_sse2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]), am[wt]);
 					else
 						for(int wt=0; wt<w; ++wt)
-							pixmix(&dst[wt], color, (src[wt*2+1] - src[wt*2]) * am[wt]);
+							pixmix2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]), am[wt]);
 				}
 			}
 			else
@@ -942,7 +1052,7 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 							while(wt+xo >= sw[1])
 								sw += 2; color = sw[-2];
 						}
-						pixmix_sse2(&dst[wt], color, s[wt*2] * am[wt]);
+						pixmix2_sse2(&dst[wt], color, s[wt*2], am[wt]);
 					}
 					else
 					for(int wt=0; wt<w; ++wt)
@@ -951,7 +1061,7 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 							while(wt+xo >= sw[1])
 								sw += 2; color = sw[-2];
 						}
-						pixmix(&dst[wt], color, s[wt*2] * am[wt]);
+						pixmix2(&dst[wt], color, s[wt*2], am[wt]);
 					}
 				}
 				else
@@ -963,7 +1073,7 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 							while(wt+xo >= sw[1])
 								sw += 2; color = sw[-2];
 						} 
-						pixmix_sse2(&dst[wt], color, (src[wt*2+1] - src[wt*2]) * am[wt]);
+						pixmix2_sse2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]), am[wt]);
 					}
 					else
 					for(int wt=0; wt<w; ++wt)
@@ -972,17 +1082,22 @@ CRect Rasterizer::Draw(SubPicDesc& spd, CRect& clipRect, byte* pAlphaMask, int x
 							while(wt+xo >= sw[1])
 								sw += 2; color = sw[-2];
 						} 
-						pixmix(&dst[wt], color, (src[wt*2+1] - src[wt*2]) * am[wt]);
+						pixmix2(&dst[wt], color, safe_subtract(src[wt*2+1], src[wt*2]), am[wt]);
 					}
 				}
 			}
 		}
 
+		// Step to next scanline
 		src += 2*mOverlayWidth;
 		s += 2*mOverlayWidth;
 		am += spd.w;
 		dst = (unsigned long *)((char *)dst + spd.pitch);
 	}
+
+	// Remember to EMMS!
+	// Rendering fails in funny ways if we don't do this.
+	_mm_empty();
 
 	return bbox;
 }
