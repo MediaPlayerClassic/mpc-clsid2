@@ -217,6 +217,9 @@
 				RelativePath="Rasterizer.cpp">
 			</File>
 			<File
+				RelativePath="RealTextParser.cpp">
+			</File>
+			<File
 				RelativePath="RTS.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -356,6 +359,9 @@
 			</File>
 			<File
 				RelativePath="Rasterizer.h">
+			</File>
+			<File
+				RelativePath="RealTextParser.h">
 			</File>
 			<File
 				RelativePath="RTS.h">

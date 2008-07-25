@@ -205,6 +205,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -272,6 +273,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="RealTextParser.cpp"
+				>
+			</File>
+			<File
 				RelativePath="RTS.cpp"
 				>
 				<FileConfiguration
@@ -279,7 +284,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
@@ -288,7 +292,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
@@ -297,7 +300,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
@@ -306,7 +308,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
@@ -362,38 +363,6 @@
 			<File
 				RelativePath="STS.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Unicode|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Unicode|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SubtitleInputPin.cpp"
@@ -432,7 +401,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AssemblerOutput="0"
-						
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -467,6 +435,10 @@
 			</File>
 			<File
 				RelativePath="Rasterizer.h"
+				>
+			</File>
+			<File
+				RelativePath="RealTextParser.h"
 				>
 			</File>
 			<File
