@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="subtitles"
 	ProjectGUID="{5E56335F-0FB1-4EEA-B240-D8DC5E0608E4}"
 	RootNamespace="subtitles"
@@ -443,6 +443,10 @@
 			</File>
 			<File
 				RelativePath="RTS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SeparableFilter.h"
 				>
 			</File>
 			<File

@@ -47,7 +47,8 @@ public:
 	bool	fItalic;
 	bool	fUnderline;
 	bool	fStrikeOut;
-	bool	fBlur;
+	int		fBlur;
+	double	fGaussianBlur;
 	double	fontAngleZ, fontAngleX, fontAngleY;
 	double	fontShiftX, fontShiftY;
 	int		relativeTo; // 0: window, 1: video, 2: undefined (~window)

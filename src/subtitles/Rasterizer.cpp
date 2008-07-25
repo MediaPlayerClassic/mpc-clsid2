@@ -25,6 +25,7 @@
 #include <vector>
 #include <algorithm>
 #include "Rasterizer.h"
+#include "SeparableFilter.h"
 
  #ifndef _MAX	/* avoid collision with common (nonconforming) macros */
   #define _MAX	(max)
@@ -670,7 +671,7 @@ void Rasterizer::DeleteOutlines()
 	mOutline.clear();
 }
 
-bool Rasterizer::Rasterize(int xsub, int ysub, bool fBlur)
+bool Rasterizer::Rasterize(int xsub, int ysub, int fBlur, double fGaussianBlur)
 {
 	_TrashOverlay();
 
@@ -691,16 +692,25 @@ bool Rasterizer::Rasterize(int xsub, int ysub, bool fBlur)
 
 	mWideBorder = (mWideBorder+7)&~7;
 
-	if(!mWideOutline.empty())
+	if(!mWideOutline.empty() || fBlur || fGaussianBlur > 0)
 	{
-		width += 2*mWideBorder;
-		height += 2*mWideBorder;
+		int bluradjust = 0;
+		if (fGaussianBlur > 0)
+			mWideBorder += (int)(fGaussianBlur*3*8 + 0.5) | 1;
+		if (fBlur)
+			mWideBorder += 8;
 
-		xsub += mWideBorder;
-		ysub += mWideBorder;
+		mWideBorder = (mWideBorder+7)&~7;
 
-		mOffsetX -= mWideBorder;
-		mOffsetY -= mWideBorder;
+		// Expand the buffer a bit when we're blurring, since that can also widen the borders a bit
+		width += 2*mWideBorder + bluradjust*2;
+		height += 2*mWideBorder + bluradjust*2;
+
+		xsub += mWideBorder + bluradjust;
+		ysub += mWideBorder + bluradjust;
+
+		mOffsetX -= mWideBorder + bluradjust;
+		mOffsetY -= mWideBorder + bluradjust;
 	}
 
 	mOverlayWidth = ((width+7)>>3) + 1;
@@ -749,31 +759,59 @@ bool Rasterizer::Rasterize(int xsub, int ysub, bool fBlur)
 		}
 	}
 
-	if(fBlur && mOverlayWidth >= 3 && mOverlayHeight >= 3)
+	// Do some gaussian blur magic
+	if (fGaussianBlur > 0)
 	{
-		int pitch = mOverlayWidth*2;
-
-		byte* tmp = new byte[pitch*mOverlayHeight];
-		if(!tmp) return(false);
-
-		memcpy(tmp, mpOverlayBuffer, pitch*mOverlayHeight);
-
-		int border = !mWideOutline.empty() ? 1 : 0;
-
-		for(int j = 1; j < mOverlayHeight-1; j++)
+		GaussianKernel filter(fGaussianBlur);
+		if (mOverlayWidth >= filter.width && mOverlayHeight >= filter.width)
 		{
-			byte* src = tmp + pitch*j + 2 + border;
-			byte* dst = mpOverlayBuffer + pitch*j + 2 + border;
+			int pitch = mOverlayWidth*2;
 
-			for(int i = 1; i < mOverlayWidth-1; i++, src+=2, dst+=2)
-			{
-				*dst = (src[-2-pitch] + (src[-pitch]<<1) + src[+2-pitch]
-					+ (src[-2]<<1) + (src[0]<<2) + (src[+2]<<1)
-					+ src[-2+pitch] + (src[+pitch]<<1) + src[+2+pitch]) >> 4;
-			}
+			byte *tmp = new byte[pitch*mOverlayHeight];
+			if(!tmp) return(false);
+
+			int border = !mWideOutline.empty() ? 1 : 0;
+
+			byte *src = mpOverlayBuffer + border;
+
+			SeparableFilterX<2>(src, tmp, mOverlayWidth, mOverlayHeight, pitch, filter.kernel, filter.width, filter.divisor);
+			SeparableFilterY<2>(tmp, src, mOverlayWidth, mOverlayHeight, pitch, filter.kernel, filter.width, filter.divisor);
+
+			delete[] tmp;
 		}
+	}
 
-		delete [] tmp;
+	// If we're blurring, do a 3x3 box blur
+	// Can't do it on subpictures smaller than 3x3 pixels
+	for (int pass = 0; pass < fBlur; pass++)
+	{
+		if(mOverlayWidth >= 3 && mOverlayHeight >= 3)
+		{
+			int pitch = mOverlayWidth*2;
+
+			byte* tmp = new byte[pitch*mOverlayHeight];
+			if(!tmp) return(false);
+
+			memcpy(tmp, mpOverlayBuffer, pitch*mOverlayHeight);
+
+			int border = !mWideOutline.empty() ? 1 : 0;
+
+			// This could be done in a separated way and win some speed
+			for(int j = 1; j < mOverlayHeight-1; j++)
+			{
+				byte* src = tmp + pitch*j + 2 + border;
+				byte* dst = mpOverlayBuffer + pitch*j + 2 + border;
+
+				for(int i = 1; i < mOverlayWidth-1; i++, src+=2, dst+=2)
+				{
+					*dst = (src[-2-pitch] + (src[-pitch]<<1) + src[+2-pitch]
+						+ (src[-2]<<1) + (src[0]<<2) + (src[+2]<<1)
+						+ src[-2+pitch] + (src[+pitch]<<1) + src[+2+pitch]) >> 4;
+				}
+			}
+
+			delete [] tmp;
+		}
 	}
 
 	return true;

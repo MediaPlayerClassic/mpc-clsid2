@@ -1577,7 +1577,7 @@ static bool OpenXombieSub(CTextFile* file, CSimpleTextSubtitle& ret, int CharSet
 				style->fItalic = !!GetInt(buff);
 				style->fUnderline = !!GetInt(buff);
 				style->fStrikeOut = !!GetInt(buff);
-				style->fBlur = !!GetInt(buff);
+				style->fBlur = GetInt(buff) ? 1 : 0;;
 				style->fontScaleX = GetFloat(buff);
 				style->fontScaleY = GetFloat(buff);
 				style->fontSpacing = GetFloat(buff);
@@ -2908,7 +2908,8 @@ void STSStyle::SetDefault()
 	fItalic = false;
 	fUnderline = false;
 	fStrikeOut = false;
-	fBlur = false;
+	fBlur = 0;
+	fGaussianBlur = 0;
 	fontShiftX = fontShiftY = fontAngleZ = fontAngleX = fontAngleY = 0;
 	relativeTo = 2;
 }
@@ -2929,6 +2930,7 @@ bool STSStyle::operator == (STSStyle& s)
 		&& alpha[2] == s.alpha[2]
 		&& alpha[3] == s.alpha[3]
 		&& fBlur == s.fBlur
+		&& fGaussianBlur == s.fGaussianBlur
 		&& relativeTo == s.relativeTo
 		&& IsFontStyleEqual(s));
 }
@@ -3001,7 +3003,7 @@ CString& operator <<= (CString& style, STSStyle& s)
 		s.colors[0], s.colors[1], s.colors[2], s.colors[3], s.alpha[0], s.alpha[1], s.alpha[2], s.alpha[3],
 		s.charSet,
 		s.fontName, s.fontSize, s.fontScaleX, s.fontScaleY, s.fontSpacing, s.fontWeight,
-		(int)s.fItalic, (int)s.fUnderline, (int)s.fStrikeOut, (int)s.fBlur,
+		(int)s.fItalic, (int)s.fUnderline, (int)s.fStrikeOut, s.fBlur, s.fGaussianBlur,
 		s.fontAngleZ, s.fontAngleX, s.fontAngleY,
 		s.relativeTo);
 
@@ -3023,7 +3025,7 @@ STSStyle& operator <<= (STSStyle& s, CString& style)
 		s.fontName = WToT(GetStr(str)); s.fontSize = GetFloat(str); 
 		s.fontScaleX = GetFloat(str); s.fontScaleY = GetFloat(str);
 		s.fontSpacing = GetFloat(str); s.fontWeight = GetInt(str);
-		s.fItalic = !!GetInt(str); s.fUnderline = !!GetInt(str); s.fStrikeOut = !!GetInt(str); s.fBlur = !!GetInt(str);
+		s.fItalic = !!GetInt(str); s.fUnderline = !!GetInt(str); s.fStrikeOut = !!GetInt(str); s.fBlur = GetInt(str); s.fGaussianBlur = GetFloat(str);
 		s.fontAngleZ = GetFloat(str); s.fontAngleX = GetFloat(str); s.fontAngleY = GetFloat(str);
 		s.relativeTo = GetInt(str);
 	}
