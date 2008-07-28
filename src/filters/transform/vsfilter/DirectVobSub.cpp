@@ -247,8 +247,8 @@ STDMETHODIMP CDirectVobSub::get_TextSettings(void* lf, int lflen, COLORREF* colo
 	}
 
 	if(color) *color = m_defStyle.colors[0];
-	if(fShadow) *fShadow = (m_defStyle.shadowDepthX!=0) || (m_defStyle.shadowDepthY!=0);
-	if(fOutline) *fOutline = (m_defStyle.outlineWidthX+m_defStyle.outlineWidthY)>0;
+	if(fShadow) *fShadow = (m_defStyle.shadowDepthX>0) || (m_defStyle.shadowDepthY>0);
+	if(fOutline) *fOutline = (m_defStyle.outlineWidthX>0) || (m_defStyle.outlineWidthY>0);
 	if(fAdvancedRenderer) *fAdvancedRenderer = m_fAdvancedRenderer;
 
 	return S_OK;
