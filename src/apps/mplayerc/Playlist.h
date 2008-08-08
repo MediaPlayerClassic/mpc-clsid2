@@ -70,4 +70,6 @@ public:
 	void SetPos(POSITION pos);
 	CPlaylistItem& GetNextWrap(POSITION& pos);
 	CPlaylistItem& GetPrevWrap(POSITION& pos);
+
+	POSITION Shuffle();
 };
