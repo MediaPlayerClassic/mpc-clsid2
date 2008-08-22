@@ -284,10 +284,9 @@ void CMPlayerCApp::ShowCmdlnSwitches()
 		_T("/minimized\tStart in minimized mode.\n")
 		_T("/new\t\tUse a new instance of the player.\n")
 		_T("/add\t\tAdd \"pathname\" to playlist, can be combined with /open and /play.\n")
-		_T("/regvid\t\tRegister video formats\n")
-		_T("/regaud\t\tRegister audio formats\n")
-		_T("/unregvid\t\tUnregister video formats\n")
-		_T("/unregaud\tUnregister audio formats\n")
+		_T("/regvid\t\tCreate file associations for video files.\n")
+		_T("/regaud\t\tCreate file associations for audio files.\n")
+		_T("/unregall\t\tRemove all file associations.\n")
 		_T("/start ms\t\tStart playing at \"ms\" (= milliseconds)\n")
 		_T("/fixedsize w,h\tSet fixed window size.\n")
 		_T("/monitor N\tStart on monitor N, where N starts from 1.\n")
@@ -656,30 +655,42 @@ BOOL CMPlayerCApp::InitInstance()
 	}
 
 	m_s.UpdateData(false);
-
-	if((m_s.nCLSwitches&CLSW_REGEXTVID) || (m_s.nCLSwitches&CLSW_UNREGEXTVID)
-	|| (m_s.nCLSwitches&CLSW_REGEXTAUD) || (m_s.nCLSwitches&CLSW_UNREGEXTAUD))
+	
+	if((m_s.nCLSwitches&CLSW_REGEXTVID) || (m_s.nCLSwitches&CLSW_REGEXTAUD))
 	{
 		CMediaFormats& mf = m_s.Formats;
 
 		for(int i = 0; i < mf.GetCount(); i++)
 		{
-			// HACK
 			if(!mf[i].GetLabel().CompareNoCase(_T("Image file"))) continue;
-
+			if(!mf[i].GetLabel().CompareNoCase(_T("Playlist file"))) continue;
+				
 			bool fAudioOnly = mf[i].IsAudioOnly();
 
 			int j = 0;
 			CString str = mf[i].GetExtsWithPeriod();
 			for(CString ext = str.Tokenize(_T(" "), j); !ext.IsEmpty(); ext = str.Tokenize(_T(" "), j))
 			{
-				if((m_s.nCLSwitches&CLSW_REGEXTVID) && !fAudioOnly
-				|| (m_s.nCLSwitches&CLSW_REGEXTAUD) && fAudioOnly)
+				if(((m_s.nCLSwitches&CLSW_REGEXTVID) && !fAudioOnly) || ((m_s.nCLSwitches&CLSW_REGEXTAUD) && fAudioOnly)) {
 					CPPageFormats::RegisterExt(ext, true);
-				
-				if((m_s.nCLSwitches&CLSW_UNREGEXTVID) && !fAudioOnly
-				|| (m_s.nCLSwitches&CLSW_UNREGEXTAUD) && fAudioOnly)
-					CPPageFormats::RegisterExt(ext, false);
+				}
+			}
+		}
+
+		return FALSE;
+	}
+	
+	if((m_s.nCLSwitches&CLSW_UNREGEXT))
+	{
+		CMediaFormats& mf = m_s.Formats;
+
+		for(int i = 0; i < mf.GetCount(); i++)
+		{
+			int j = 0;
+			CString str = mf[i].GetExtsWithPeriod();
+			for(CString ext = str.Tokenize(_T(" "), j); !ext.IsEmpty(); ext = str.Tokenize(_T(" "), j))
+			{
+				CPPageFormats::RegisterExt(ext, false);
 			}
 		}
 
@@ -1742,8 +1753,9 @@ void CMPlayerCApp::Settings::ParseCommandLine(CAtlList<CString>& cmdln)
 			else if(sw == _T("add")) nCLSwitches |= CLSW_ADD;
 			else if(sw == _T("regvid")) nCLSwitches |= CLSW_REGEXTVID;
 			else if(sw == _T("regaud")) nCLSwitches |= CLSW_REGEXTAUD;
-			else if(sw == _T("unregvid")) nCLSwitches |= CLSW_UNREGEXTVID;
-			else if(sw == _T("unregaud")) nCLSwitches |= CLSW_UNREGEXTAUD;
+			else if(sw == _T("unregall")) nCLSwitches |= CLSW_UNREGEXT;
+			else if(sw == _T("unregvid")) nCLSwitches |= CLSW_UNREGEXT; /* keep for compatibility with old versions */
+			else if(sw == _T("unregaud")) nCLSwitches |= CLSW_UNREGEXT; /* keep for compatibility with old versions */
 			else if(sw == _T("start") && pos) {rtStart = 10000i64*_tcstol(cmdln.GetNext(pos), NULL, 10); nCLSwitches |= CLSW_STARTVALID;}
 			else if(sw == _T("startpos") && pos) {/* TODO: mm:ss. */;}
 			else if(sw == _T("nofocus")) nCLSwitches |= CLSW_NOFOCUS;
