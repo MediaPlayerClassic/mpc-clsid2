@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="subpic"
 	ProjectGUID="{D514EA4D-EAFB-47A9-A437-A582CA571251}"
 	RootNamespace="subpic"
@@ -40,8 +40,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -97,10 +95,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -157,8 +152,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -196,6 +189,7 @@
 			InheritedPropertySheets="..\common.vsprops;..\release.vsprops"
 			UseOfMFC="1"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -214,10 +208,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

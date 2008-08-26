@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="dsutil"
 	ProjectGUID="{FC70988B-1AE5-4381-866D-4F405E28AC42}"
 	RootNamespace="dsutil"
@@ -40,8 +40,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -98,10 +96,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -158,8 +153,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -197,6 +190,7 @@
 			InheritedPropertySheets="..\common.vsprops;..\release.vsprops"
 			UseOfMFC="1"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -215,10 +209,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;"
-				
-				
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

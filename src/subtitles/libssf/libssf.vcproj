@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="libssf"
 	ProjectGUID="{DD9D2D92-2241-408A-859E-B85D444B7E3C}"
 	RootNamespace="libssf"
@@ -197,7 +197,7 @@
 			InheritedPropertySheets="..\..\common.vsprops;..\..\release.vsprops"
 			UseOfMFC="1"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -216,6 +216,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				UsePrecompiledHeader="2"
 			/>
