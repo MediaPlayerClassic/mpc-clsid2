@@ -193,8 +193,8 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("Indeo Video file"), _T("ivf")));
 		ADDFMT((_T("AIFF Format Sound"), _T("aif aifc aiff"), true));
 		ADDFMT((_T("AU Format Sound"), _T("au snd"), true));
-		ADDFMT((_T("Ogg Media file"), _T("ogm")));
-		ADDFMT((_T("Ogg Vorbis Audio file"), _T("ogg"), true));
+		ADDFMT((_T("Ogg Media file"), _T("ogm ogv")));
+		ADDFMT((_T("Ogg Vorbis Audio file"), _T("ogg oga"), true));
 		ADDFMT((_T("CD Audio Track"), _T("cda"), true, _T("Windows 2000/XP or better")));
 		ADDFMT((_T("FLIC file"), _T("fli flc flic")));
 		ADDFMT((_T("DVD2AVI Project file"), _T("d2v")));

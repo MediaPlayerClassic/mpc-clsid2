@@ -73,6 +73,7 @@
 				IgnoreDefaultLibraryNames="MSVCRT"
 				DelayLoadDLLs="d3d9.dll;gdiplus.dll;psapi.dll"
 				SubSystem="2"
+				LinkTimeCodeGeneration="1"
 				SupportUnloadOfDelayLoadedDLL="true"
 			/>
 			<Tool
