@@ -216,7 +216,6 @@ void CMediaFormats::UpdateData(bool fSave)
 		ADDFMT((_T("Flash Video file"), _T("flv")));
 		ADDFMT((_T("Shockwave Flash file"), _T("swf"), false, _T("ShockWave ActiveX control"), ShockWave));
 		ADDFMT((_T("Quicktime file"), _T("mov qt amr 3g2 3gp2"), false, _T("QuickTime or codec pack"), QuickTime));
-		ADDFMT((_T("Image file"), _T("jpeg jpg bmp gif pic png dib tiff tif")));
 		ADDFMT((_T("Playlist file"), _T("asx m3u pls wvx wax wmx mpcpl")));
 		ADDFMT((_T("Other"), _T("divx vp6 rmvb amv")));
 #undef ADDFMT

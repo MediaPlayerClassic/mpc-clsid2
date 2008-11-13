@@ -450,8 +450,7 @@ BOOL CPPageFormats::OnInitDialog()
 	for(int i = 0; i < mf.GetCount(); i++)
 	{
 		CString label = mf[i].GetLabel();
-		// HACK: sorry, mpc is just not an image viewer :)
-		if(!label.CompareNoCase(_T("Image file"))) continue;
+
 		int iItem = m_list.InsertItem(i, label);
 		m_list.SetItemData(iItem, i);
 		engine_t e = mf[i].GetEngineType();
