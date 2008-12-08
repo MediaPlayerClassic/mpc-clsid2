@@ -26,6 +26,15 @@
 #include <initguid.h>
 #include "..\..\..\..\include\moreuuids.h"
 
+#define MAKE32BITS(x)		(x[0]<<24 | x[1]<<16 | x[2]<<8 | x[3])
+#define MAKE24BITS(x)		(x[0]<<16 | x[1]<<8  | x[2])
+#define MAKE16BITS(x)		(x[0]<<8  | x[1])
+
+# define TH_VERSION_CHECK(version_major,version_minor,version_subminor,_maj,_min,_sub) \
+ (version_major>(_maj)||version_major==(_maj)&& \
+ (version_minor>(_min)||version_minor==(_min)&& \
+ version_subminor>=(_sub)))
+
 #ifdef REGISTER_FILTER
 
 const AMOVIESETUP_MEDIATYPE sudPinTypesIn[] =
@@ -166,7 +175,18 @@ HRESULT COggSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 
 			HRESULT hr;
 
-			if(type == 1 && (page.m_hdr.header_type_flag & OggPageHeader::first))
+			if(type >= 0x80 && type <= 0x82 && !memcmp(p, "theora", 6))
+			{
+				if(type == 0x80)
+				{
+					name.Format(L"Theora %d", i);
+					CAutoPtr<CBaseSplitterOutputPin> pPinOut;
+					pPinOut.Attach(new COggTheoraOutputPin(page.GetData(), name, this, this, &hr));
+					AddOutputPin(page.m_hdr.bitstream_serial_number, pPinOut);
+					nWaitForMore++;
+				}
+			}
+			else if(type == 1 && (page.m_hdr.header_type_flag & OggPageHeader::first))
 			{
 				CAutoPtr<CBaseSplitterOutputPin> pPinOut;
 
@@ -211,6 +231,12 @@ HRESULT COggSplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 			{
 				break;
 			}
+		}
+
+		if(COggTheoraOutputPin* p = dynamic_cast<COggTheoraOutputPin*>(GetOutputPin(page.m_hdr.bitstream_serial_number)))
+		{
+			p->UnpackInitPage(page);
+			if(p->IsInitialized()) nWaitForMore--;
 		}
 
 		if(COggVorbisOutputPin* p = dynamic_cast<COggVorbisOutputPin*>(GetOutputPin(page.m_hdr.bitstream_serial_number)))
@@ -665,9 +691,9 @@ if(abs(rtLast - m_rtLast) == GetRefTime(1)) m_rtLast = rtLast; // FIXME
 				if(S_OK == UnpackPacket(p, pData + i, j-i))
 				{
 //if(p->TrackNumber == 1)
-TRACE(_T("[%d]: %d, %I64d -> %I64d (skip=%d, disc=%d, sync=%d)\n"), 
-		(int)p->TrackNumber, p->GetCount(), p->rtStart, p->rtStop,
-		(int)m_fSkip, (int)p->bDiscontinuity, (int)p->bSyncPoint);
+//TRACE(_T("[%d]: %d, %I64d -> %I64d (skip=%d, disc=%d, sync=%d)\n"), 
+//		(int)p->TrackNumber, p->GetCount(), p->rtStart, p->rtStop,
+//		(int)m_fSkip, (int)p->bDiscontinuity, (int)p->bSyncPoint);
 
 					if(p->rtStart <= p->rtStop && p->rtStop <= p->rtStart + 10000000i64*60)
 					{
@@ -1047,5 +1073,93 @@ COggTextOutputPin::COggTextOutputPin(OggStreamHeader* h, LPCWSTR pName, CBaseFil
 	mt.formattype = FORMAT_None;
 	mt.SetSampleSize(1);
 	m_mts.Add(mt);
+}
+
+// COggTheoraOutputPin
+
+COggTheoraOutputPin::COggTheoraOutputPin(BYTE* p, LPCWSTR pName, CBaseFilter* pFilter, CCritSec* pLock, HRESULT* phr)
+	: COggSplitterOutputPin(pName, pFilter, pLock, phr)
+{
+	CMediaType mt;
+	mt.majortype		= MEDIATYPE_Video;
+	mt.subtype			= FOURCCMap('OEHT');
+	mt.formattype		= FORMAT_MPEG2_VIDEO;
+	MPEG2VIDEOINFO* vih = (MPEG2VIDEOINFO*)mt.AllocFormatBuffer(sizeof(MPEG2VIDEOINFO));
+	memset(mt.Format(), 0, mt.FormatLength());
+	vih->hdr.bmiHeader.biSize		 = sizeof(vih->hdr.bmiHeader);
+	vih->hdr.bmiHeader.biWidth		 = *(WORD*)&p[10] >> 4;
+	vih->hdr.bmiHeader.biHeight		 = *(WORD*)&p[12] >> 4;
+	vih->hdr.bmiHeader.biCompression = 'OEHT';
+	vih->hdr.bmiHeader.biPlanes		 = 1;
+	vih->hdr.bmiHeader.biBitCount	 = 24;
+	m_nFpsNum	= (p[22]<<24)|(p[23]<<16)|(p[24]<<8)|p[25];
+	m_nFpsDenum	= (p[26]<<24)|(p[27]<<16)|(p[28]<<8)|p[29];
+	if(m_nFpsNum) vih->hdr.AvgTimePerFrame = (REFERENCE_TIME)(10000000.0 * m_nFpsDenum / m_nFpsNum);
+	vih->hdr.dwPictAspectRatioX = (p[14]<<16)|(p[15]<<8)|p[16];
+	vih->hdr.dwPictAspectRatioY = (p[17]<<16)|(p[18]<<8)|p[19];
+	
+	m_KfgShift					= ((p[40]<<8+p[41]) &0x3E0) >> 5;
+	m_nIndexOffset	= TH_VERSION_CHECK(p[7],p[8],p[9],3,2,1);
+	
+	if (m_KfgShift == 0) m_KfgShift = 6;	// Is it really default value ?
+
+	mt.bFixedSizeSamples = 0;
+	m_mts.Add(mt);
+}
+
+HRESULT COggTheoraOutputPin::UnpackInitPage(OggPage& page)
+{
+	HRESULT hr = __super::UnpackPage(page);
+
+	while(m_packets.GetCount())
+	{
+		Packet* p = m_packets.GetHead();
+
+		CMediaType& mt = m_mts[0];
+		int size = p->GetCount();
+		ASSERT(size <= 0xffff);
+		MPEG2VIDEOINFO* vih = (MPEG2VIDEOINFO*)mt.ReallocFormatBuffer(
+			FIELD_OFFSET(MPEG2VIDEOINFO, dwSequenceHeader) + 
+			((MPEG2VIDEOINFO*)mt.Format())->cbSequenceHeader + 
+			2 + size);
+		*(WORD*)((BYTE*)vih->dwSequenceHeader + vih->cbSequenceHeader) = (size>>8)|(size<<8);
+		memcpy((BYTE*)vih->dwSequenceHeader + vih->cbSequenceHeader + 2, p->GetData(), size);
+		vih->cbSequenceHeader += 2 + size;
+
+		m_initpackets.AddTail(m_packets.RemoveHead());
+	}
+
+	return hr;
+}
+
+REFERENCE_TIME COggTheoraOutputPin::GetRefTime(__int64 granule_position)
+{
+    LONGLONG	iframe;
+    LONGLONG	pframe;
+
+    iframe=granule_position>>m_KfgShift;
+    pframe=granule_position-(iframe<<m_KfgShift);
+    /*3.2.0 streams store the frame index in the granule position.
+      3.2.1 and later store the frame count.
+      We return the index, so adjust the value if we have a 3.2.1 or later
+       stream.*/
+
+	REFERENCE_TIME rt = 0;
+	if(m_mt.majortype == MEDIATYPE_Video)
+		rt = (iframe+pframe-m_nIndexOffset) * ((MPEG2VIDEOINFO*)m_mt.Format())->hdr.AvgTimePerFrame;
+	return rt;
+}
+
+HRESULT COggTheoraOutputPin::UnpackPacket(CAutoPtr<OggPacket>& p, BYTE* pData, int len)
+{
+	p->bSyncPoint = len > 0 ? !(*pData & 0x40) : TRUE;
+	p->rtStart = m_rtLast;
+	p->rtStop = m_rtLast+1;
+	p->SetData(pData, len);
+
+	if(!(*pData & 0x80) && m_mt.majortype == MEDIATYPE_Video)
+		p->rtStop = p->rtStart + ((MPEG2VIDEOINFO*)m_mt.Format())->hdr.AvgTimePerFrame;
+
+	return S_OK;
 }
 

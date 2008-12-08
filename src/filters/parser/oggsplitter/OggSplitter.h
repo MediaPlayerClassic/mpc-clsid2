@@ -129,6 +129,24 @@ public:
 	COggTextOutputPin(OggStreamHeader* h, LPCWSTR pName, CBaseFilter* pFilter, CCritSec* pLock, HRESULT* phr);
 };
 
+class COggTheoraOutputPin : public COggSplitterOutputPin
+{
+	CAutoPtrList<OggPacket> m_initpackets;
+	LONGLONG				m_KfgShift;
+	int						m_nIndexOffset;
+	int						m_nFpsNum;
+	int						m_nFpsDenum;
+
+	virtual HRESULT UnpackPacket(CAutoPtr<OggPacket>& p, BYTE* pData, int len);
+	virtual REFERENCE_TIME GetRefTime(__int64 granule_position);
+
+public:
+	COggTheoraOutputPin(BYTE* p, LPCWSTR pName, CBaseFilter* pFilter, CCritSec* pLock, HRESULT* phr);
+
+	HRESULT UnpackInitPage(OggPage& page);
+	bool IsInitialized() {return m_initpackets.GetCount() >= 3;}
+};
+
 [uuid("9FF48807-E133-40AA-826F-9B2959E5232D")]
 class COggSplitterFilter : public CBaseSplitterFilter
 {
