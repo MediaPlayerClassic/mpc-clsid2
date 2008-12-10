@@ -419,6 +419,8 @@ HRESULT CMP4SplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 					vih->hdr.bmiHeader.biBitCount = 24;
 					vih->hdr.dwPictAspectRatioX = vih->hdr.bmiHeader.biWidth;
 					vih->hdr.dwPictAspectRatioY = vih->hdr.bmiHeader.biHeight;
+					if (item->GetData()->GetSampleCount() > 1)
+						vih->hdr.AvgTimePerFrame = item->GetData()->GetDurationMs()*10000 / (item->GetData()->GetSampleCount()-1);
 					vih->dwProfile = data[1];
 					vih->dwLevel = data[3];
 					vih->dwFlags = (data[4] & 3) + 1;
@@ -470,6 +472,10 @@ HRESULT CMP4SplitterFilter::CreateOutputs(IAsyncReader* pAsyncReader)
 					else if(type == AP4_ATOM_TYPE__MP3)
 					{
 						type = 0x0055;
+					}
+					else if(type == AP4_ATOM_TYPE__AC3)
+					{
+						type = 0x2000;
 					}
 					else
 					{
