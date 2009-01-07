@@ -73,8 +73,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,1,5
- PRODUCTVERSION 1,0,1,5
+ FILEVERSION 2,39,5,0
+ PRODUCTVERSION 2,39,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -91,12 +91,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "VobSub & TextSub filter for DirectShow/VirtualDub/Avisynth"
-            VALUE "FileVersion", "1, 0, 1, 5"
+            VALUE "FileVersion", "2, 39, 5, 0"
             VALUE "InternalName", "VSFilter"
-            VALUE "LegalCopyright", "Copyright (C) 2001-2008 Gabest"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2008 Gabest et. al."
             VALUE "OriginalFilename", "VSFilter.DLL"
             VALUE "ProductName", "VSFilter"
-            VALUE "ProductVersion", "1, 0, 1, 5"
+            VALUE "ProductVersion", "2, 39, 5, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -595,8 +595,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
