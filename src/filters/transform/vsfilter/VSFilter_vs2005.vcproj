@@ -201,7 +201,6 @@
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="false"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500;_WIN32_WINNT=0x501;ISOLATION_AWARE_ENABLED;"
-				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\$(OutDir)/$(ProjectName).pch"
 				DebugInformationFormat="3"
@@ -426,6 +425,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\vfr.cpp"
+				>
+			</File>
+			<File
 				RelativePath="VSFilter.cpp"
 				>
 			</File>
@@ -468,6 +471,10 @@
 			</File>
 			<File
 				RelativePath="TextInputPin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\vfr.h"
 				>
 			</File>
 			<File
