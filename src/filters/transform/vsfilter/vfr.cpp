@@ -82,7 +82,7 @@ public:
 			// Comment?
 			if (buf[0] == '#') continue;
 
-			if (strncmp(buf, "Assume ", 7) == 0 && default_spf < 0) {
+			if (strnicmp(buf, "Assume ", 7) == 0 && default_spf < 0) {
 				char *num = buf+7;
 				default_spf = atof(num);
 				if (default_spf > 0)
@@ -94,8 +94,8 @@ public:
 			}
 
 			int start_frame, end_frame;
-			double fps;
-			if (scanf("%d,%d,%f", &start_frame, &end_frame, &fps) == 3) {
+			float fps;
+			if (sscanf(buf, "%d,%d,%f", &start_frame, &end_frame, &fps) == 3) {
 				// Finish the current temp section
 				temp_section.end_frame = start_frame - 1;
 				if (temp_section.end_frame >= temp_section.start_frame) {
@@ -153,12 +153,12 @@ public:
 			// Comment?
 			if (buf[0] == '#') continue;
 			// Otherwise assume it's a good timestamp
-			timestamps.push_back(atof(buf));
+			timestamps.push_back(atof(buf)/1000);
 		}
 
 		last_known_frame = (int)timestamps.size()-1;
 		last_known_timestamp = timestamps[last_known_frame];
-		assumed_spf = 1/25.0; // yes, this is stupid - anyone got a better idea?
+		assumed_spf = last_known_timestamp - timestamps[last_known_frame - 1];
 	}
 
 };

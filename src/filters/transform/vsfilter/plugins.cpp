@@ -713,7 +713,7 @@ namespace AviSynth25
 
 		VFRTranslator *vfr = 0;
 		if (args[4].Defined())
-			vfr = GetVFRTranslator(args[5].AsString());
+			vfr = GetVFRTranslator(args[4].AsString());
 
 		return(new CTextSubAvisynthFilter(
 			args[0].AsClip(),
