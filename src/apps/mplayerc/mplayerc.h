@@ -307,7 +307,7 @@ public:
 
 	bool GetAppDataPath(CString& path);
 	
-	static bool	IsVista();
+	static bool	IsVistaOrAbove();
 	static bool	IsVSFilterInstalled();
 
 // Overrides
