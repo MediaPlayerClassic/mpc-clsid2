@@ -582,7 +582,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RT_STYLE            "Style"
+    IDS_RT_STYLE            "Style2"
 END
 
 #endif    // English (U.S.) resources
@@ -595,7 +595,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
