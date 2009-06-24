@@ -73,8 +73,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,39,5,1
- PRODUCTVERSION 2,39,5,1
+ FILEVERSION 2,39,5,2
+ PRODUCTVERSION 2,39,5,2
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -91,12 +91,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "VobSub & TextSub filter for DirectShow/VirtualDub/Avisynth"
-            VALUE "FileVersion", "2, 39, 5, 1"
+            VALUE "FileVersion", "2, 39, 5, 2"
             VALUE "InternalName", "VSFilter"
             VALUE "LegalCopyright", "Copyright (C) 2001-2009 Gabest et. al."
             VALUE "OriginalFilename", "VSFilter.DLL"
             VALUE "ProductName", "VSFilter"
-            VALUE "ProductVersion", "2, 39, 5, 1"
+            VALUE "ProductVersion", "2, 39, 5, 2"
         END
     END
     BLOCK "VarFileInfo"
