@@ -73,8 +73,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,39,5,2
- PRODUCTVERSION 2,39,5,2
+ FILEVERSION 2,39,5,3
+ PRODUCTVERSION 2,39,5,3
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -91,12 +91,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Gabest"
             VALUE "FileDescription", "VobSub & TextSub filter for DirectShow/VirtualDub/Avisynth"
-            VALUE "FileVersion", "2, 39, 5, 2"
+            VALUE "FileVersion", "2, 39, 5, 3"
             VALUE "InternalName", "VSFilter"
             VALUE "LegalCopyright", "Copyright (C) 2001-2009 Gabest et. al."
             VALUE "OriginalFilename", "VSFilter.DLL"
             VALUE "ProductName", "VSFilter"
-            VALUE "ProductVersion", "2, 39, 5, 2"
+            VALUE "ProductVersion", "2, 39, 5, 3"
         END
     END
     BLOCK "VarFileInfo"
@@ -224,7 +224,7 @@ STYLE DS_SETFONT | WS_CHILD
 FONT 8, "MS Sans Serif", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Subtitle Timing",IDC_STATIC,7,7,233,96
-    LTEXT           "Delay (enter a positive number if the subtitles are late, or a negative if they come early)",IDC_STATIC,14,20,219,16
+    LTEXT           "Delay (enter a positive value to display the subtitles later, or a negative value to display them earlier)",IDC_STATIC,14,20,219,16
     EDITTEXT        IDC_EDIT5,20,41,48,12,ES_RIGHT | ES_AUTOHSCROLL
     CONTROL         "",IDC_SPIN5,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,60,45,11,14
     LTEXT           "(millisecs)",IDC_STATIC,73,43,31,8
