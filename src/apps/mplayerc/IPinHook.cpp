@@ -66,16 +66,21 @@ bool HookNewSegmentAndReceive(IPinC* pPinC, IMemInputPinC* pMemInputPinC)
 
 	BOOL res;
 	DWORD flOldProtect = 0;
+	DWORD flSetProtect = 0;
 
-	res = VirtualProtect(pPinC->lpVtbl, sizeof(IPinC), PAGE_WRITECOPY, &flOldProtect);
+	res = VirtualProtect(pPinC->lpVtbl, sizeof(IPinCVtbl /*IPinC*/), PAGE_WRITECOPY, &flOldProtect);
+	flSetProtect = flOldProtect;
 	if(NewSegmentOrg == NULL) NewSegmentOrg = pPinC->lpVtbl->NewSegment;
 	pPinC->lpVtbl->NewSegment = NewSegmentMine;
-	res = VirtualProtect(pPinC->lpVtbl, sizeof(IPinC), PAGE_EXECUTE, &flOldProtect);
+	res = VirtualProtect(pPinC->lpVtbl, sizeof(IPinCVtbl /*IPinC*/), flSetProtect /* PAGE_EXECUTE */, &flOldProtect);
 
-	res = VirtualProtect(pMemInputPinC->lpVtbl, sizeof(IMemInputPinC), PAGE_WRITECOPY, &flOldProtect);
+	flOldProtect = 0;
+	res = VirtualProtect(pMemInputPinC->lpVtbl, sizeof(IMemInputPinCVtbl /*IMemInputPinC*/), PAGE_WRITECOPY, &flOldProtect);
+	flSetProtect = flOldProtect;
+	
 	if(ReceiveOrg == NULL) ReceiveOrg = pMemInputPinC->lpVtbl->Receive;
 	pMemInputPinC->lpVtbl->Receive = ReceiveMine;
-	res = VirtualProtect(pMemInputPinC->lpVtbl, sizeof(IMemInputPinC), PAGE_EXECUTE, &flOldProtect);
+	res = VirtualProtect(pMemInputPinC->lpVtbl, sizeof(IMemInputPinCVtbl /*IMemInputPinC*/), flSetProtect /*PAGE_EXECUTE*/, &flOldProtect);
 
 	return true;
 }
