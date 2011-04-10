@@ -8,6 +8,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="..\..\BaseClasses"
 		PreprocessorDefinitions="_WIN32_WINNT=0x0501;NTDDI_VERSION=NTDDI_WINXPSP2"
 		EnableFunctionLevelLinking="true"
 		WarningLevel="3"
